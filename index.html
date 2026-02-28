@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MathSpace — Samia</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getStorage, ref, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBMSX0_KYX8EXtVBNGGb3Z687TcsQrD7WY",
+    authDomain: "ramadan-7ef9d.firebaseapp.com",
+    projectId: "ramadan-7ef9d",
+    storageBucket: "ramadan-7ef9d.firebasestorage.app",
+    messagingSenderId: "1054040681487",
+    appId: "1:1054040681487:web:d9432a65a1d550c078877a",
+    measurementId: "G-BGB7NQGHKQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  // ===== USERS =====
+  const USERS = {
+    "Elyne":    { pin: "1111", color: "#E8A598" },
+    "Khadija":  { pin: "2222", color: "#A8C5B5" },
+    "Alicia":   { pin: "3333", color: "#B5A8C5" },
+    "Marie":    { pin: "4444", color: "#C5BBA8" },
+    "Ombeline": { pin: "5555", color: "#A8B5C5" },
+    "Lucie":    { pin: "6666", color: "#C5A8B5" },
+    "Cherryl":  { pin: "7777", color: "#B5C5A8" },
+    "Samia":    { pin: "9999", color: "#2C2C2C", isTeacher: true }
+  };
+
+  let currentUser = null;
+  let currentTab = "exercices";
+  let editingExoId = null;
+
+  // ===== LOGIN =====
+  window.login = function() {
+    const name = document.getElementById("login-name").value;
+    const pin = document.getElementById("login-pin").value;
+    if (USERS[name] && USERS[name].pin === pin) {
+      currentUser = name;
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("app-screen").style.display = "flex";
+      document.getElementById("user-name-display").textContent = name;
+      document.getElementById("user-avatar").textContent = name[0];
+      document.getElementById("user-avatar").style.background = USERS[name].color;
+      if (USERS[name].isTeacher) {
+        document.getElementById("tab-overview").style.display = "flex";
+      }
+      showTab("exercices");
+    } else {
+      document.getElementById("login-error").style.display = "block";
+      document.getElementById("login-pin").value = "";
+    }
+  };
+
+  window.logout = function() {
+    currentUser = null;
+    document.getElementById("login-screen").style.display = "flex";
+    document.getElementById("app-screen").style.display = "none";
+    document.getElementById("login-pin").value = "";
+    document.getElementById("login-name").value = "";
+    document.getElementById("login-error").style.display = "none";
+    document.getElementById("tab-overview").style.display = "none";
+  };
+
+  // ===== TABS =====
+  window.showTab = function(tab) {
+    currentTab = tab;
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c => c.style.display = "none");
+    document.getElementById("tab-btn-" + tab).classList.add("active");
+    document.getElementById("content-" + tab).style.display = "block";
+    if (tab === "exercices") loadExercices();
+    if (tab === "questions") loadQuestions();
+    if (tab === "fiches") loadFiches();
+    if (tab === "overview") loadOverview();
+  };
+
+  // ===== EXERCICES =====
+  window.openExoModal = function(id = null) {
+    editingExoId = id;
+    document.getElementById("exo-modal").style.display = "flex";
+    document.getElementById("exo-modal-title").textContent = id ? "Modifier l'exercice" : "Ajouter un exercice";
+    if (!id) {
+      document.getElementById("exo-form").reset();
+      document.getElementById("exo-photo-preview").innerHTML = "";
+    }
+  };
+
+  window.closeExoModal = function() {
+    document.getElementById("exo-modal").style.display = "none";
+    editingExoId = null;
+  };
+
+  window.previewPhoto = function(inputId, previewId) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+    const file = input.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        preview.innerHTML = `<img src="${e.target.result}" style="max-width:100%;max-height:150px;border-radius:8px;margin-top:8px;">`;
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  async function uploadPhoto(inputId) {
+    const input = document.getElementById(inputId);
+    const file = input.files[0];
+    if (!file) return null;
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = async e => {
+        const dataUrl = e.target.result;
+        try {
+          const storageRef = ref(storage, `photos/${Date.now()}_${file.name}`);
+          await uploadString(storageRef, dataUrl, 'data_url');
+          const url = await getDownloadURL(storageRef);
+          resolve(url);
+        } catch {
+          resolve(dataUrl); // fallback: store base64 in Firestore (small files only)
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  window.saveExo = async function() {
+    const titre = document.getElementById("exo-titre").value.trim();
+    if (!titre) { alert("Merci d'indiquer un titre ou intitulé."); return; }
+
+    const btn = document.getElementById("exo-save-btn");
+    btn.textContent = "Enregistrement...";
+    btn.disabled = true;
+
+    let photoUrl = null;
+    const photoInput = document.getElementById("exo-photo");
+    if (photoInput.files[0]) {
+      photoUrl = await uploadPhoto("exo-photo");
+    }
+
+    const data = {
+      eleve: currentUser,
+      titre,
+      theme: document.getElementById("exo-theme").value.trim(),
+      source: document.getElementById("exo-source").value,
+      type: document.getElementById("exo-type").value,
+      statut: document.getElementById("exo-statut").value,
+      note: document.getElementById("exo-note").value.trim(),
+      partageProf: document.getElementById("exo-partage").checked,
+      date: new Date().toISOString(),
+      updatedAt: serverTimestamp()
+    };
+    if (photoUrl) data.photoUrl = photoUrl;
+
+    try {
+      if (editingExoId) {
+        await updateDoc(doc(db, "exercices", editingExoId), data);
+      } else {
+        data.createdAt = serverTimestamp();
+        await addDoc(collection(db, "exercices"), data);
+      }
+      closeExoModal();
+      loadExercices();
+    } catch(e) {
+      alert("Erreur : " + e.message);
+    }
+    btn.textContent = "Enregistrer";
+    btn.disabled = false;
+  };
+
+  window.deleteExo = async function(id) {
+    if (!confirm("Supprimer cet exercice ?")) return;
+    await deleteDoc(doc(db, "exercices", id));
+    loadExercices();
+  };
+
+  async function loadExercices() {
+    const container = document.getElementById("exo-list");
+    container.innerHTML = `<div class="loading">Chargement...</div>`;
+    try {
+      const q = query(collection(db, "exercices"), where("eleve", "==", currentUser), orderBy("createdAt", "desc"));
+      const snap = await getDocs(q);
+      const filterTheme = document.getElementById("filter-theme")?.value || "";
+      const filterStatut = document.getElementById("filter-statut")?.value || "";
+      let docs = snap.docs.map(d => ({id: d.id, ...d.data()}));
+      if (filterTheme) docs = docs.filter(d => d.theme?.toLowerCase().includes(filterTheme.toLowerCase()));
+      if (filterStatut) docs = docs.filter(d => d.statut === filterStatut);
+      renderExoList(container, docs);
+    } catch(e) {
+      container.innerHTML = `<div class="error">Erreur de chargement. Vérifiez les règles Firestore.</div>`;
+    }
+  }
+
+  const STATUT_LABELS = {
+    "bien_reussi": { label: "✅ Bien réussi", cls: "statut-ok" },
+    "compris_revoir": { label: "🔄 Compris mais à revoir", cls: "statut-mid" },
+    "a_revoir": { label: "⚠️ À revoir", cls: "statut-warn" },
+    "rien_compris": { label: "❌ Rien compris", cls: "statut-bad" },
+  };
+
+  function renderExoList(container, docs) {
+    if (docs.length === 0) {
+      container.innerHTML = `<div class="empty-state">Aucun exercice encore. Ajoutes-en un ! 📚</div>`;
+      return;
+    }
+    container.innerHTML = docs.map(d => {
+      const s = STATUT_LABELS[d.statut] || {label: d.statut, cls:""};
+      const date = d.date ? new Date(d.date).toLocaleDateString("fr-FR") : "";
+      return `
+      <div class="exo-card">
+        <div class="exo-card-header">
+          <div>
+            <div class="exo-titre">${d.titre}</div>
+            <div class="exo-meta">
+              ${d.theme ? `<span class="tag tag-theme">${d.theme}</span>` : ""}
+              <span class="tag">${d.source}</span>
+              <span class="tag">${d.type === "ensemble" ? "Fait ensemble" : "Fait seule"}</span>
+              ${d.partageProf ? `<span class="tag tag-share">📤 Partagé avec Samia</span>` : ""}
+            </div>
+          </div>
+          <div style="text-align:right">
+            <span class="statut-badge ${s.cls}">${s.label}</span>
+            <div class="exo-date">${date}</div>
+          </div>
+        </div>
+        ${d.note ? `<div class="exo-note">${d.note}</div>` : ""}
+        ${d.photoUrl ? `<img src="${d.photoUrl}" class="exo-photo">` : ""}
+        <div class="exo-actions">
+          <button class="btn-sm btn-edit" onclick="openEditExo('${d.id}', ${JSON.stringify(d).replace(/'/g,"&#39;")})">✏️ Modifier</button>
+          <button class="btn-sm btn-delete" onclick="deleteExo('${d.id}')">🗑️ Supprimer</button>
+        </div>
+      </div>`;
+    }).join("");
+  }
+
+  window.openEditExo = function(id, data) {
+    openExoModal(id);
+    setTimeout(() => {
+      document.getElementById("exo-titre").value = data.titre || "";
+      document.getElementById("exo-theme").value = data.theme || "";
+      document.getElementById("exo-source").value = data.source || "livre";
+      document.getElementById("exo-type").value = data.type || "seule";
+      document.getElementById("exo-statut").value = data.statut || "bien_reussi";
+      document.getElementById("exo-note").value = data.note || "";
+      document.getElementById("exo-partage").checked = data.partageProf || false;
+      if (data.photoUrl) {
+        document.getElementById("exo-photo-preview").innerHTML = `<img src="${data.photoUrl}" style="max-width:100%;max-height:150px;border-radius:8px;margin-top:8px;">`;
+      }
+    }, 50);
+  };
+
+  window.filterExos = function() { loadExercices(); };
+
+  // ===== QUESTIONS =====
+  window.openQModal = function() {
+    document.getElementById("q-modal").style.display = "flex";
+    document.getElementById("q-form").reset();
+    document.getElementById("q-photo-preview").innerHTML = "";
+  };
+  window.closeQModal = function() { document.getElementById("q-modal").style.display = "none"; };
+
+  window.saveQuestion = async function() {
+    const texte = document.getElementById("q-texte").value.trim();
+    if (!texte) { alert("Écris ta question !"); return; }
+    const btn = document.getElementById("q-save-btn");
+    btn.textContent = "Envoi..."; btn.disabled = true;
+
+    let photoUrl = null;
+    if (document.getElementById("q-photo").files[0]) {
+      photoUrl = await uploadPhoto("q-photo");
+    }
+    const data = {
+      eleve: currentUser,
+      texte,
+      chapitre: document.getElementById("q-chapitre").value.trim(),
+      date: new Date().toISOString(),
+      reponse: null,
+      createdAt: serverTimestamp()
+    };
+    if (photoUrl) data.photoUrl = photoUrl;
+    try {
+      await addDoc(collection(db, "questions"), data);
+      closeQModal();
+      loadQuestions();
+    } catch(e) { alert("Erreur : " + e.message); }
+    btn.textContent = "Envoyer"; btn.disabled = false;
+  };
+
+  async function loadQuestions() {
+    const container = document.getElementById("q-list");
+    container.innerHTML = `<div class="loading">Chargement...</div>`;
+    try {
+      const q = query(collection(db, "questions"), where("eleve", "==", currentUser), orderBy("createdAt", "desc"));
+      const snap = await getDocs(q);
+      if (snap.empty) { container.innerHTML = `<div class="empty-state">Aucune question posée. N'hésite pas ! 💬</div>`; return; }
+      container.innerHTML = snap.docs.map(d => {
+        const dat = d.data();
+        const date = dat.date ? new Date(dat.date).toLocaleDateString("fr-FR") : "";
+        return `
+        <div class="q-card">
+          <div class="q-header">
+            <div>
+              ${dat.chapitre ? `<span class="tag tag-theme">${dat.chapitre}</span>` : ""}
+              <div class="q-texte">${dat.texte}</div>
+            </div>
+            <div class="exo-date">${date}</div>
+          </div>
+          ${dat.photoUrl ? `<img src="${dat.photoUrl}" class="exo-photo">` : ""}
+          ${dat.reponse ? `<div class="reponse-prof">💬 Samia : ${dat.reponse}</div>` : `<div class="en-attente">⏳ En attente de réponse</div>`}
+        </div>`;
+      }).join("");
+    } catch(e) { container.innerHTML = `<div class="error">Erreur de chargement.</div>`; }
+  }
+
+  // ===== FICHES =====
+  window.openFicheModal = function() {
+    if (!USERS[currentUser]?.isTeacher) return;
+    document.getElementById("fiche-modal").style.display = "flex";
+    document.getElementById("fiche-form").reset();
+  };
+  window.closeFicheModal = function() { document.getElementById("fiche-modal").style.display = "none"; };
+
+  window.saveFiche = async function() {
+    const titre = document.getElementById("fiche-titre").value.trim();
+    const contenu = document.getElementById("fiche-contenu").value.trim();
+    if (!titre) { alert("Titre requis."); return; }
+    const btn = document.getElementById("fiche-save-btn");
+    btn.textContent = "Enregistrement..."; btn.disabled = true;
+    const destinataires = [...document.querySelectorAll(".fiche-dest:checked")].map(c => c.value);
+    if (destinataires.length === 0) { alert("Sélectionne au moins une élève."); btn.textContent="Enregistrer";btn.disabled=false;return; }
+
+    let fichierUrl = null;
+    if (document.getElementById("fiche-fichier").files[0]) {
+      fichierUrl = await uploadPhoto("fiche-fichier");
+    }
+    const data = {
+      titre,
+      contenu,
+      theme: document.getElementById("fiche-theme").value.trim(),
+      destinataires,
+      date: new Date().toISOString(),
+      createdAt: serverTimestamp(),
+      auteur: "Samia"
+    };
+    if (fichierUrl) data.fichierUrl = fichierUrl;
+    try {
+      await addDoc(collection(db, "fiches"), data);
+      closeFicheModal();
+      loadFiches();
+    } catch(e) { alert("Erreur : " + e.message); }
+    btn.textContent = "Enregistrer"; btn.disabled = false;
+  };
+
+  window.deleteFiche = async function(id) {
+    if (!confirm("Supprimer cette fiche ?")) return;
+    await deleteDoc(doc(db, "fiches", id));
+    loadFiches();
+  };
+
+  async function loadFiches() {
+    const container = document.getElementById("fiche-list");
+    container.innerHTML = `<div class="loading">Chargement...</div>`;
+    try {
+      const snap = await getDocs(query(collection(db, "fiches"), orderBy("createdAt", "desc")));
+      const fiches = snap.docs.map(d => ({id:d.id,...d.data()})).filter(f => {
+        if (USERS[currentUser]?.isTeacher) return true;
+        return f.destinataires?.includes(currentUser) || f.destinataires?.includes("Toutes");
+      });
+      if (fiches.length === 0) { container.innerHTML = `<div class="empty-state">Aucune fiche de cours pour l'instant. 📄</div>`; return; }
+      container.innerHTML = fiches.map(f => {
+        const date = f.date ? new Date(f.date).toLocaleDateString("fr-FR") : "";
+        return `
+        <div class="fiche-card">
+          <div class="fiche-card-header">
+            <div>
+              <div class="fiche-titre">${f.titre}</div>
+              <div class="exo-meta">
+                ${f.theme ? `<span class="tag tag-theme">${f.theme}</span>` : ""}
+                <span class="tag">Pour : ${f.destinataires?.join(", ")}</span>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="exo-date">${date}</div>
+              ${USERS[currentUser]?.isTeacher ? `<button class="btn-sm btn-delete" onclick="deleteFiche('${f.id}')">🗑️</button>` : ""}
+            </div>
+          </div>
+          ${f.contenu ? `<div class="fiche-contenu">${f.contenu.replace(/\n/g,"<br>")}</div>` : ""}
+          ${f.fichierUrl ? `<img src="${f.fichierUrl}" class="exo-photo">` : ""}
+        </div>`;
+      }).join("");
+    } catch(e) { container.innerHTML = `<div class="error">Erreur de chargement.</div>`; }
+  }
+
+  // ===== OVERVIEW (Samia) =====
+  async function loadOverview() {
+    const container = document.getElementById("overview-list");
+    container.innerHTML = `<div class="loading">Chargement des données élèves...</div>`;
+    try {
+      const exoSnap = await getDocs(query(collection(db, "exercices"), where("partageProf", "==", true), orderBy("createdAt", "desc")));
+      const qSnap = await getDocs(query(collection(db, "questions"), orderBy("createdAt", "desc")));
+      const exos = exoSnap.docs.map(d => ({id:d.id,...d.data()}));
+      const questions = qSnap.docs.map(d => ({id:d.id,...d.data()}));
+      const eleves = Object.keys(USERS).filter(u => !USERS[u].isTeacher);
+
+      container.innerHTML = eleves.map(eleve => {
+        const eExos = exos.filter(e => e.eleve === eleve);
+        const eQs = questions.filter(q => q.eleve === eleve);
+        const stats = {
+          bien_reussi: eExos.filter(e=>e.statut==="bien_reussi").length,
+          compris_revoir: eExos.filter(e=>e.statut==="compris_revoir").length,
+          a_revoir: eExos.filter(e=>e.statut==="a_revoir").length,
+          rien_compris: eExos.filter(e=>e.statut==="rien_compris").length,
+        };
+        const color = USERS[eleve].color;
+        return `
+        <div class="overview-card">
+          <div class="overview-header" style="border-left:4px solid ${color}">
+            <div class="overview-avatar" style="background:${color}">${eleve[0]}</div>
+            <div>
+              <div class="overview-name">${eleve}</div>
+              <div class="exo-meta">
+                <span class="tag">✅ ${stats.bien_reussi}</span>
+                <span class="tag">🔄 ${stats.compris_revoir}</span>
+                <span class="tag">⚠️ ${stats.a_revoir}</span>
+                <span class="tag">❌ ${stats.rien_compris}</span>
+              </div>
+            </div>
+            ${eQs.filter(q=>!q.reponse).length > 0 ? `<span class="notif-badge">${eQs.filter(q=>!q.reponse).length} question(s)</span>` : ""}
+          </div>
+          ${eExos.length === 0 ? `<div class="empty-state" style="font-size:13px">Aucun exercice partagé</div>` : `
+          <div class="exo-list-compact">
+            ${eExos.slice(0,5).map(e => {
+              const s = STATUT_LABELS[e.statut] || {label:e.statut,cls:""};
+              const date = e.date ? new Date(e.date).toLocaleDateString("fr-FR") : "";
+              return `<div class="exo-compact-row">
+                <div>
+                  <strong>${e.titre}</strong>
+                  ${e.theme ? `<span class="tag tag-theme" style="margin-left:6px">${e.theme}</span>` : ""}
+                </div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span class="statut-badge ${s.cls}" style="font-size:11px">${s.label}</span>
+                  <span class="exo-date">${date}</span>
+                </div>
+              </div>`;
+            }).join("")}
+          </div>`}
+          ${eQs.length > 0 ? `
+          <div style="margin-top:12px;border-top:1px solid #eee;padding-top:12px">
+            <div style="font-weight:600;font-size:13px;margin-bottom:8px">💬 Questions</div>
+            ${eQs.slice(0,3).map(q => `
+              <div class="q-compact">
+                <div>${q.texte}</div>
+                ${!q.reponse ? `<button class="btn-sm btn-reply" onclick="openReplyModal('${q.id}', '${eleve}')">Répondre</button>` : `<span style="font-size:12px;color:#888">Répondu ✓</span>`}
+              </div>`).join("")}
+          </div>` : ""}
+        </div>`;
+      }).join("");
+    } catch(e) { container.innerHTML = `<div class="error">Erreur : ${e.message}</div>`; }
+  }
+
+  window.openReplyModal = function(qId, eleve) {
+    document.getElementById("reply-modal").style.display = "flex";
+    document.getElementById("reply-modal").dataset.qid = qId;
+  };
+  window.closeReplyModal = function() { document.getElementById("reply-modal").style.display = "none"; };
+
+  window.sendReply = async function() {
+    const qId = document.getElementById("reply-modal").dataset.qid;
+    const reponse = document.getElementById("reply-text").value.trim();
+    if (!reponse) return;
+    await updateDoc(doc(db, "questions", qId), { reponse });
+    closeReplyModal();
+    loadOverview();
+  };
+
+  // PIN input helper
+  window.handlePinKey = function(e) {
+    if (e.key === "Enter") login();
+  };
+
+  // Make functions available
+  window.db = db;
+</script>
+
+<style>
+  :root {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --text: #1A1A1A;
+    --text-muted: #888;
+    --border: #E8E4DE;
+    --accent: #2C5F8A;
+    --accent-light: #EBF2F9;
+    --danger: #C0392B;
+    --success: #27AE60;
+    --warn: #E67E22;
+    --radius: 14px;
+    --shadow: 0 2px 16px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* LOGIN */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a3a5c 0%, #2C5F8A 50%, #4a8ab5 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  #login-screen::before {
+    content: "∑ ∫ π √ ∞ ≠ ≤ ≥ ² ³";
+    position: absolute;
+    font-size: 80px;
+    color: rgba(255,255,255,0.04);
+    letter-spacing: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+  }
+  .login-card {
+    background: white;
+    border-radius: 24px;
+    padding: 48px 40px;
+    width: 360px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+    text-align: center;
+    position: relative;
+  }
+  .login-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .login-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
+  .login-card select, .login-card input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: inherit;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+    background: var(--bg);
+  }
+  .login-card select:focus, .login-card input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .login-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.1s, box-shadow 0.2s;
+    margin-top: 4px;
+  }
+  .login-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(44,95,138,0.4); }
+  .login-btn:active { transform: none; }
+  .login-error { color: var(--danger); font-size: 14px; margin-top: 12px; display: none; }
+
+  /* APP */
+  #app-screen { display: none; flex-direction: column; min-height: 100vh; }
+
+  /* TOPBAR */
+  .topbar {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .topbar-logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--accent); flex: 1; }
+  .user-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg);
+    padding: 6px 12px 6px 6px;
+    border-radius: 99px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  #user-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: white;
+  }
+  .logout-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+  .logout-btn:hover { background: var(--bg); color: var(--text); }
+
+  /* TABS */
+  .tabs {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 0;
+    padding: 0 20px;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    padding: 14px 20px;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+  #tab-overview { display: none; }
+
+  /* MAIN */
+  .main { flex: 1; padding: 24px 20px; max-width: 900px; margin: 0 auto; width: 100%; }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.1s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(44,95,138,0.3); }
+
+  /* FILTERS */
+  .filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .filters input, .filters select {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    background: white;
+  }
+  .filters input:focus, .filters select:focus { outline: none; border-color: var(--accent); }
+
+  /* CARDS */
+  .exo-card, .q-card, .fiche-card, .overview-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .exo-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+  .exo-titre { font-weight: 600; font-size: 16px; margin-bottom: 6px; }
+  .exo-meta { display: flex; gap: 6px; flex-wrap: wrap; }
+  .exo-date { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .exo-note { font-size: 14px; color: #555; margin: 8px 0; padding: 10px; background: var(--bg); border-radius: 8px; border-left: 3px solid var(--accent); }
+  .exo-photo { max-width: 100%; max-height: 200px; border-radius: 10px; margin-top: 10px; object-fit: contain; }
+
+  .tag {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 99px;
+    background: var(--bg);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .tag-theme { background: var(--accent-light); color: var(--accent); border-color: #c5d9ed; }
+  .tag-share { background: #fff3cd; color: #856404; border-color: #ffc107; }
+
+  .statut-badge {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .statut-ok { background: #d4edda; color: #155724; }
+  .statut-mid { background: #cce5ff; color: #004085; }
+  .statut-warn { background: #fff3cd; color: #856404; }
+  .statut-bad { background: #f8d7da; color: #721c24; }
+
+  .exo-actions { display: flex; gap: 8px; margin-top: 14px; border-top: 1px solid var(--bg); padding-top: 12px; }
+  .btn-sm { padding: 6px 12px; border-radius: 7px; border: none; font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+  .btn-edit { background: var(--accent-light); color: var(--accent); }
+  .btn-edit:hover { background: #d5e8f5; }
+  .btn-delete { background: #fdecea; color: var(--danger); }
+  .btn-delete:hover { background: #fbd5d2; }
+  .btn-reply { background: #d4edda; color: #155724; }
+
+  /* QUESTIONS */
+  .q-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .q-texte { font-size: 15px; margin-top: 6px; }
+  .reponse-prof { margin-top: 12px; padding: 10px 14px; background: #e8f5e9; border-radius: 10px; font-size: 14px; color: #1b5e20; border-left: 3px solid var(--success); }
+  .en-attente { margin-top: 10px; font-size: 13px; color: var(--text-muted); font-style: italic; }
+
+  /* FICHES */
+  .fiche-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .fiche-titre { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .fiche-contenu { font-size: 14px; line-height: 1.7; color: #333; white-space: pre-wrap; }
+
+  /* OVERVIEW */
+  .overview-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--bg); }
+  .overview-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; color: white; flex-shrink: 0; }
+  .overview-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .exo-compact-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--bg); font-size: 14px; gap: 12px; flex-wrap: wrap; }
+  .q-compact { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 14px; gap: 12px; border-bottom: 1px solid var(--bg); }
+  .notif-badge { margin-left: auto; background: #f8d7da; color: var(--danger); font-size: 12px; padding: 4px 10px; border-radius: 99px; font-weight: 600; white-space: nowrap; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  .modal {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    width: 100%;
+    max-width: 540px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-bottom: 24px; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--bg);
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .checkbox-group { display: flex; align-items: center; gap: 8px; }
+  .checkbox-group input { width: auto; }
+  .checkbox-group label { text-transform: none; font-size: 14px; color: var(--text); font-weight: 500; margin-bottom: 0; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+  .btn-cancel { padding: 10px 20px; border: 1px solid var(--border); background: white; border-radius: 10px; font-family: inherit; font-size: 14px; cursor: pointer; }
+  .btn-cancel:hover { background: var(--bg); }
+
+  /* Destinations checkboxes */
+  .dest-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .dest-item { display: flex; align-items: center; gap: 5px; font-size: 13px; }
+  .dest-item input { width: auto; }
+
+  /* STATES */
+  .loading, .empty-state, .error {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    font-size: 15px;
+  }
+  .error { color: var(--danger); }
+
+  .tab-content { display: none; }
+
+  @media (max-width: 600px) {
+    .modal { padding: 24px 20px; }
+    .exo-card-header { flex-direction: column; }
+    .main { padding: 16px; }
+    .topbar-logo { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">MathSpace</div>
+    <div class="login-sub">Espace personnel — Cours de Samia</div>
+    <select id="login-name">
+      <option value="">Qui es-tu ?</option>
+      <option>Elyne</option>
+      <option>Khadija</option>
+      <option>Alicia</option>
+      <option>Marie</option>
+      <option>Ombeline</option>
+      <option>Lucie</option>
+      <option>Cherryl</option>
+      <option>Samia</option>
+    </select>
+    <input type="password" id="login-pin" placeholder="Code PIN" maxlength="6" onkeydown="handlePinKey(event)" inputmode="numeric">
+    <button class="login-btn" onclick="login()">Connexion →</button>
+    <div id="login-error" class="login-error">Code incorrect, réessaie 😊</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-screen">
+  <div class="topbar">
+    <div class="topbar-logo">MathSpace</div>
+    <div class="user-chip">
+      <div id="user-avatar"></div>
+      <span id="user-name-display"></span>
+    </div>
+    <button class="logout-btn" onclick="logout()">Déconnexion</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn" id="tab-btn-exercices" onclick="showTab('exercices')">📚 Exercices</button>
+    <button class="tab-btn" id="tab-btn-questions" onclick="showTab('questions')">💬 Questions</button>
+    <button class="tab-btn" id="tab-btn-fiches" onclick="showTab('fiches')">📄 Fiches de cours</button>
+    <button class="tab-btn" id="tab-overview" onclick="showTab('overview')">👩‍🏫 Vue élèves</button>
+  </div>
+
+  <div class="main">
+
+    <!-- EXERCICES -->
+    <div id="content-exercices" class="tab-content">
+      <div class="section-header">
+        <div class="section-title">Mes exercices</div>
+        <button class="btn-primary" onclick="openExoModal()">+ Ajouter un exercice</button>
+      </div>
+      <div class="filters">
+        <input id="filter-theme" placeholder="🔍 Filtrer par thème..." oninput="filterExos()">
+        <select id="filter-statut" onchange="filterExos()">
+          <option value="">Tous les statuts</option>
+          <option value="bien_reussi">✅ Bien réussi</option>
+          <option value="compris_revoir">🔄 Compris mais à revoir</option>
+          <option value="a_revoir">⚠️ À revoir</option>
+          <option value="rien_compris">❌ Rien compris</option>
+        </select>
+      </div>
+      <div id="exo-list"></div>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div id="content-questions" class="tab-content">
+      <div class="section-header">
+        <div class="section-title">Mes questions</div>
+        <button class="btn-primary" onclick="openQModal()">+ Poser une question</button>
+      </div>
+      <div id="q-list"></div>
+    </div>
+
+    <!-- FICHES -->
+    <div id="content-fiches" class="tab-content">
+      <div class="section-header">
+        <div class="section-title">Fiches de cours</div>
+        <button class="btn-primary" id="btn-add-fiche" onclick="openFicheModal()" style="display:none">+ Ajouter une fiche</button>
+      </div>
+      <div id="fiche-list"></div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div id="content-overview" class="tab-content">
+      <div class="section-header">
+        <div class="section-title">Travail des élèves</div>
+      </div>
+      <div id="overview-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL EXERCICE -->
+<div class="modal-overlay" id="exo-modal">
+  <div class="modal">
+    <div class="modal-title" id="exo-modal-title">Ajouter un exercice</div>
+    <form id="exo-form">
+      <div class="form-group">
+        <label>Titre / Intitulé de l'exercice *</label>
+        <input id="exo-titre" placeholder="Ex: Exercice 12 p.45 — Équations du second degré">
+      </div>
+      <div class="form-group">
+        <label>Thème / Chapitre</label>
+        <input id="exo-theme" placeholder="Ex: Trigonométrie, Probabilités…">
+      </div>
+      <div class="form-group">
+        <label>Source</label>
+        <select id="exo-source">
+          <option value="livre">📖 Livre</option>
+          <option value="internet">🌐 Internet</option>
+          <option value="prof">👩‍🏫 Donné par Samia</option>
+          <option value="autre">📝 Autre</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Fait</label>
+        <select id="exo-type">
+          <option value="seule">Seule</option>
+          <option value="ensemble">Ensemble avec Samia</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Résultat / Statut</label>
+        <select id="exo-statut">
+          <option value="bien_reussi">✅ Bien réussi</option>
+          <option value="compris_revoir">🔄 Compris mais à revoir</option>
+          <option value="a_revoir">⚠️ À revoir</option>
+          <option value="rien_compris">❌ Rien compris</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Notes / Corrections</label>
+        <textarea id="exo-note" placeholder="Ce que j'ai compris, les erreurs, les remarques…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Photo (correction, brouillon…)</label>
+        <input type="file" id="exo-photo" accept="image/*" onchange="previewPhoto('exo-photo','exo-photo-preview')">
+        <div id="exo-photo-preview"></div>
+      </div>
+      <div class="form-group">
+        <div class="checkbox-group">
+          <input type="checkbox" id="exo-partage" value="true">
+          <label for="exo-partage">📤 Partager cet exercice avec Samia</label>
+        </div>
+      </div>
+    </form>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeExoModal()">Annuler</button>
+      <button class="btn-primary" id="exo-save-btn" onclick="saveExo()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL QUESTION -->
+<div class="modal-overlay" id="q-modal">
+  <div class="modal">
+    <div class="modal-title">Poser une question à Samia</div>
+    <form id="q-form">
+      <div class="form-group">
+        <label>Chapitre / Thème concerné</label>
+        <input id="q-chapitre" placeholder="Ex: Dérivées, Suites…">
+      </div>
+      <div class="form-group">
+        <label>Ta question *</label>
+        <textarea id="q-texte" placeholder="Décris ta question précisément…" style="min-height:120px"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Photo (exercice, calcul…)</label>
+        <input type="file" id="q-photo" accept="image/*" onchange="previewPhoto('q-photo','q-photo-preview')">
+        <div id="q-photo-preview"></div>
+      </div>
+    </form>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeQModal()">Annuler</button>
+      <button class="btn-primary" id="q-save-btn" onclick="saveQuestion()">Envoyer 📨</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FICHE -->
+<div class="modal-overlay" id="fiche-modal">
+  <div class="modal">
+    <div class="modal-title">Ajouter une fiche de cours</div>
+    <form id="fiche-form">
+      <div class="form-group">
+        <label>Titre *</label>
+        <input id="fiche-titre" placeholder="Ex: Fiche — Dérivées et variations">
+      </div>
+      <div class="form-group">
+        <label>Thème / Chapitre</label>
+        <input id="fiche-theme" placeholder="Ex: Analyse, Algèbre…">
+      </div>
+      <div class="form-group">
+        <label>Contenu (texte libre)</label>
+        <textarea id="fiche-contenu" placeholder="Cours, formules, méthodes…" style="min-height:140px"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Fichier / Image</label>
+        <input type="file" id="fiche-fichier" accept="image/*,.pdf">
+      </div>
+      <div class="form-group">
+        <label>Destinataires</label>
+        <div class="dest-grid">
+          <label class="dest-item"><input type="checkbox" class="fiche-dest" value="Toutes"> Toutes</label>
+          <label class="dest-item"><input type="checkbox" class="fiche-dest" value="Elyne"> Elyne</label>
+          <label class="dest-item"><input type="checkbox" class="fiche-dest" value="Khadija"> Khadija</label>
+          <label class="dest-item"><input type="checkbox" class="fiche-dest" value="Alicia"> Alicia</label>
+          <label class="dest-item"><input type="checkbox" class="fiche-dest" value="Marie"> Marie</label>
+          <label class="dest-item"><input type="checkbox" class="fiche-dest" value="Ombeline"> Ombeline</label>
+          <label class="dest-item"><input type="checkbox" class="fiche-dest" value="Lucie"> Lucie</label>
+          <label class="dest-item"><input type="checkbox" class="fiche-dest" value="Cherryl"> Cherryl</label>
+        </div>
+      </div>
+    </form>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeFicheModal()">Annuler</button>
+      <button class="btn-primary" id="fiche-save-btn" onclick="saveFiche()">Publier 📤</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RÉPONSE -->
+<div class="modal-overlay" id="reply-modal">
+  <div class="modal">
+    <div class="modal-title">Répondre à la question</div>
+    <div class="form-group">
+      <label>Ta réponse</label>
+      <textarea id="reply-text" style="min-height:120px" placeholder="Écris ta réponse ici…"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeReplyModal()">Annuler</button>
+      <button class="btn-primary" onclick="sendReply()">Envoyer ✉️</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Show fiche add button only for teacher after login
+  const origShowTab = window.showTab;
+  document.addEventListener("DOMContentLoaded", () => {
+    // patch showTab to show/hide fiche button
+    const _orig = window.showTab;
+    window.showTab = function(tab) {
+      _orig(tab);
+      const ficheBtn = document.getElementById("btn-add-fiche");
+      if (ficheBtn) ficheBtn.style.display = (tab === "fiches" && window.currentUserIsTeacher) ? "flex" : "none";
+    };
+  });
+
+  // Patch login to set teacher flag and show fiche btn
+  const _origLogin = window.login;
+  window.login = function() {
+    const name = document.getElementById("login-name").value;
+    const pin = document.getElementById("login-pin").value;
+    const USERS_CHECK = {
+      "Samia": "9999"
+    };
+    if (name === "Samia" && pin === "9999") {
+      window.currentUserIsTeacher = true;
+    } else {
+      window.currentUserIsTeacher = false;
+    }
+    _origLogin();
+    const ficheBtn = document.getElementById("btn-add-fiche");
+    if (ficheBtn && window.currentUserIsTeacher) ficheBtn.style.display = "flex";
+  };
+</script>
+
+</body>
+</html>
