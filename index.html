@@ -51,59 +51,28 @@
     padding-top: calc(32px + env(safe-area-inset-top));
   }
   .login-emoji { font-size: 72px; margin-bottom: 12px; }
-  .login-title {
-    font-size: 36px; font-weight: 900; color: white;
-    letter-spacing: -1px; margin-bottom: 4px;
-  }
+  .login-title { font-size: 36px; font-weight: 900; color: white; letter-spacing: -1px; margin-bottom: 4px; }
   .login-sub { color: rgba(255,255,255,0.6); font-size: 14px; margin-bottom: 40px; }
 
-  .login-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 10px; width: 100%; max-width: 400px; margin-bottom: 32px;
-  }
-  .user-btn {
-    background: rgba(255,255,255,0.12);
-    border: 2px solid rgba(255,255,255,0.2);
-    border-radius: 16px; padding: 12px 6px;
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    cursor: pointer; transition: all 0.2s;
-    color: white;
-  }
+  .login-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; max-width: 400px; margin-bottom: 32px; }
+  .user-btn { background: rgba(255,255,255,0.12); border: 2px solid rgba(255,255,255,0.2); border-radius: 16px; padding: 12px 6px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; transition: all 0.2s; color: white; }
   .user-btn:active { transform: scale(0.95); background: rgba(255,255,255,0.2); }
   .user-btn.selected { background: rgba(255,255,255,0.25); border-color: white; }
-  .user-btn .avatar {
-    width: 44px; height: 44px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 18px; color: white;
-  }
+  .user-btn .avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; color: white; }
   .user-btn span { font-size: 11px; font-weight: 600; opacity: 0.9; }
 
   .pin-container { width: 100%; max-width: 300px; }
   .pin-label { color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 10px; text-align: center; }
   .pin-dots { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; }
-  .pin-dot {
-    width: 14px; height: 14px; border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.5);
-    transition: all 0.2s;
-  }
+  .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.5); transition: all 0.2s; }
   .pin-dot.filled { background: white; border-color: white; }
 
   .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .pin-key {
-    background: rgba(255,255,255,0.12); border: none;
-    border-radius: 14px; padding: 16px;
-    font-size: 22px; font-weight: 700; color: white;
-    cursor: pointer; font-family: inherit;
-    transition: all 0.15s;
-  }
+  .pin-key { background: rgba(255,255,255,0.12); border: none; border-radius: 14px; padding: 16px; font-size: 22px; font-weight: 700; color: white; cursor: pointer; font-family: inherit; transition: all 0.15s; }
   .pin-key:active { transform: scale(0.92); background: rgba(255,255,255,0.25); }
   .pin-key.del { font-size: 18px; }
   .pin-key.empty { background: transparent; cursor: default; }
-
-  .login-error {
-    color: #ff6b6b; font-size: 13px; margin-top: 12px;
-    text-align: center; display: none;
-  }
+  .login-error { color: #ff6b6b; font-size: 13px; margin-top: 12px; text-align: center; display: none; }
 
   /* ===== PAGES ===== */
   .page { display: none; padding: 20px; animation: fadeIn 0.3s; }
@@ -111,252 +80,116 @@
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
   /* ===== TOPBAR ===== */
-  .topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 20px 8px;
-    background: var(--bg);
-    position: sticky; top: 0; z-index: 50;
-  }
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 8px; background: var(--bg); position: sticky; top: 0; z-index: 50; }
   .topbar-left { display: flex; align-items: center; gap: 10px; }
-  .topbar-avatar {
-    width: 38px; height: 38px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 16px; color: white;
-  }
+  .topbar-avatar { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; color: white; }
   .topbar-name { font-weight: 800; font-size: 18px; }
-  .topbar-right button {
-    background: none; border: none; color: var(--muted);
-    font-size: 13px; font-family: inherit; cursor: pointer;
-    padding: 6px 10px; border-radius: 8px;
-  }
+  .topbar-right button { background: none; border: none; color: var(--muted); font-size: 13px; font-family: inherit; cursor: pointer; padding: 6px 10px; border-radius: 8px; }
 
   /* ===== NAV BAR & BADGES ===== */
-  .nav-bar {
-    position: fixed;
-    bottom: calc(16px + env(safe-area-inset-bottom));
-    left: 16px; right: 16px;
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 28px;
-    height: 68px;
-    display: flex; align-items: center; justify-content: space-around;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-    border: 1px solid rgba(255,255,255,0.8);
-    z-index: 100;
-  }
-  .nav-btn {
-    display: flex; flex-direction: column; align-items: center; gap: 3px;
-    background: none; border: none; cursor: pointer;
-    color: var(--muted); font-family: inherit;
-    padding: 8px 16px; border-radius: 16px;
-    transition: all 0.2s; flex: 1; position: relative;
-  }
-  .nav-btn i { font-size: 20px; }
+  .nav-bar { position: fixed; bottom: calc(16px + env(safe-area-inset-bottom)); left: 16px; right: 16px; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border-radius: 28px; height: 68px; display: flex; align-items: center; justify-content: space-around; box-shadow: 0 8px 32px rgba(0,0,0,0.12); border: 1px solid rgba(255,255,255,0.8); z-index: 100; padding: 0 4px; }
+  .nav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: none; border: none; cursor: pointer; color: var(--muted); font-family: inherit; padding: 6px 4px; border-radius: 16px; transition: all 0.2s; flex: 1; position: relative; }
+  .nav-btn i { font-size: 18px; }
   .nav-btn span { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
   .nav-btn.active { color: var(--primary); }
-  .nav-btn.active i { transform: scale(1.1); }
-  
-  .badge {
-    position: absolute; top: 4px; right: 20px;
-    background: #E74C3C; color: white;
-    font-size: 10px; font-weight: 800;
-    padding: 2px 6px; border-radius: 99px;
-    border: 2px solid white; display: none;
-  }
+  .nav-btn.active i { transform: scale(1.15); }
+  .badge { position: absolute; top: 2px; right: 12px; background: #E74C3C; color: white; font-size: 10px; font-weight: 800; padding: 2px 5px; border-radius: 99px; border: 2px solid white; display: none; }
 
   /* ===== SECTION HEADER ===== */
-  .section-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 16px;
-  }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
   .section-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
 
   /* ===== CARDS ===== */
-  .card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 18px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-    border: 1px solid var(--border);
-  }
+  .card { background: var(--card); border-radius: var(--radius); padding: 18px; margin-bottom: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); border: 1px solid var(--border); }
 
   /* ===== TAGS & BADGES ===== */
-  .tag {
-    display: inline-flex; align-items: center;
-    font-size: 11px; font-weight: 600;
-    padding: 3px 8px; border-radius: 99px;
-    background: var(--bg); color: var(--muted);
-    border: 1px solid var(--border);
-  }
+  .tag { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 99px; background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
   .tag-theme { background: var(--primary-light); color: var(--primary); border-color: #c5d9ed; }
   .tag-share { background: #FFF8E1; color: #F57F17; border-color: #FFE082; }
-
-  .statut-badge {
-    font-size: 11px; font-weight: 700;
-    padding: 4px 10px; border-radius: 99px;
-  }
+  .statut-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 99px; }
   .s-ok { background: var(--ok-bg); color: var(--ok); }
   .s-mid { background: var(--mid-bg); color: var(--mid); }
   .s-warn { background: var(--warn-bg); color: var(--warn); }
   .s-bad { background: var(--bad-bg); color: var(--bad); }
 
-  /* ===== EXO CARD ===== */
-  .exo-titre { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
-  .exo-meta { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
-  .exo-note {
-    font-size: 13px; color: #555; padding: 10px 12px;
-    background: var(--bg); border-radius: 10px;
-    border-left: 3px solid var(--primary); margin: 8px 0;
-  }
-  .exo-photo { width: 100%; max-height: 200px; object-fit: contain; border-radius: 12px; margin-top: 8px; }
-  .exo-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
-  .exo-date { font-size: 11px; color: var(--muted); }
-  .exo-actions { display: flex; gap: 6px; }
+  /* ===== FILTERS ===== */
+  .filters { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
+  .filters::-webkit-scrollbar { display: none; }
+  .filter-input, .filter-select { padding: 9px 13px; border: 1.5px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 13px; background: white; white-space: nowrap; flex-shrink: 0; }
+  .filter-input { min-width: 140px; }
+  .filter-input:focus, .filter-select:focus { outline: none; border-color: var(--primary); }
+  .teacher-eleve-filter { display: none; background-color: #fcf0e3; border-color: #f0c395; color: #b56b1e; font-weight:700; }
 
-  /* ===== CHAT (MESSAGERIE) ===== */
-  .chat-container {
-    background: white; border-radius: var(--radius); border: 1px solid var(--border);
-    display: flex; flex-direction: column; height: 60vh;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05); overflow: hidden;
-  }
+  /* ===== BUTTONS ===== */
+  .btn-primary { background: var(--primary); color: white; border: none; border-radius: 13px; padding: 11px 18px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: all 0.15s; }
+  .btn-primary:active { transform: scale(0.97); opacity: 0.9; }
+  .btn-sm { padding: 6px 12px; border-radius: 9px; border: none; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .btn-sm:active { transform: scale(0.95); }
+  .btn-edit { background: var(--primary-light); color: var(--primary); }
+  .btn-del { background: var(--bad-bg); color: var(--bad); }
+
+  /* ===== MODAL ===== */
+  .modal-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.5); display: none; align-items: flex-end; justify-content: center; padding: 0; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; border-radius: 24px 24px 0 0; padding: 24px 20px calc(24px + env(safe-area-inset-bottom)); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .modal-handle { width: 36px; height: 4px; background: #ddd; border-radius: 99px; margin: 0 auto 20px; }
+  .modal-title { font-size: 20px; font-weight: 900; margin-bottom: 20px; letter-spacing: -0.5px; }
+  .form-group { margin-bottom: 14px; }
+  .form-label { display: block; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .form-input, .form-select, .form-textarea { width: 100%; padding: 13px 14px; border: 1.5px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 14px; background: var(--bg); transition: border-color 0.2s; color: var(--text); }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--primary); background: white; }
+  .form-textarea { resize: vertical; min-height: 90px; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .btn-cancel { flex: 1; padding: 13px; border: 1.5px solid var(--border); background: white; border-radius: 13px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .btn-confirm { flex: 2; }
+  .photo-preview img { width: 100%; max-height: 150px; object-fit: contain; border-radius: 12px; margin-top: 8px; }
+  .doc-preview-box { padding: 10px; background: #E8F4FD; color: #2980B9; border-radius: 8px; text-align: center; margin-top: 8px; font-weight: 600; font-size: 13px; border: 1px solid #bce0fd; }
+
+  /* ===== CHAT ===== */
+  .chat-container { background: white; border-radius: var(--radius); border: 1px solid var(--border); display: flex; flex-direction: column; height: 60vh; box-shadow: 0 2px 12px rgba(0,0,0,0.05); overflow: hidden; }
   .chat-box { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
   .chat-msg { max-width: 80%; padding: 10px 14px; border-radius: 16px; font-size: 14px; line-height: 1.4; position: relative; }
   .chat-msg.me { align-self: flex-end; background: var(--primary); color: white; border-bottom-right-radius: 4px; }
   .chat-msg.other { align-self: flex-start; background: #f0f2f5; color: var(--text); border-bottom-left-radius: 4px; }
   .chat-time { font-size: 10px; opacity: 0.7; margin-top: 4px; text-align: right; }
   .chat-img { width: 100%; max-width: 250px; border-radius: 8px; margin-top: 4px; cursor: pointer; }
-  
   .chat-input-area { display: flex; gap: 8px; padding: 12px; background: white; border-top: 1px solid var(--border); align-items: center; }
   .chat-input-area input[type="text"] { flex: 1; padding: 12px 16px; border-radius: 99px; border: 1px solid var(--border); font-family: inherit; font-size: 14px; background: var(--bg); outline: none; }
-  .chat-input-area input[type="text"]:focus { border-color: var(--primary); background: white; }
-  
   .chat-photo-btn { background: var(--primary-light); color: var(--primary); border: none; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: 0.2s; flex-shrink: 0; }
-  .chat-photo-btn:active { transform: scale(0.9); }
-  
   .chat-send-btn { background: var(--primary); color: white; border: none; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.2s; flex-shrink: 0; }
-  .chat-send-btn:active { transform: scale(0.9); }
+  .modal-chat { height: 85vh; display: flex; flex-direction: column; padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
+  .modal-chat .chat-container { border: none; box-shadow: none; height: 100%; flex: 1; }
 
-  /* ===== FICHES ===== */
-  .fiche-titre { font-size: 17px; font-weight: 800; margin-bottom: 8px; }
-  .fiche-contenu { font-size: 13px; line-height: 1.7; color: #444; white-space: pre-wrap; margin-top: 10px; }
-  .fiche-iframe { width: 100%; height: 400px; border: none; border-radius: 12px; margin-top: 12px; background: #fff; box-shadow: 0 1px 5px rgba(0,0,0,0.05); }
+  /* ===== DEVOIRS ===== */
+  .devoirs-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .devoirs-col { background: white; border-radius: 18px; padding: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); border: 1px solid var(--border); min-height: 200px; }
+  .devoirs-col-header { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+  .devoirs-col-header-samia { color: #B55A8A !important; }
+  .devoir-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; line-height: 1.4; }
+  .devoir-item:last-child { border-bottom: none; }
+  .devoir-checkbox { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--border); flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.2s; margin-top: 1px; background: white; }
+  .devoir-checkbox.checked { background: var(--ok); border-color: var(--ok); color: white; }
+  .devoir-checkbox-samia.checked { background: #B55A8A; border-color: #B55A8A; }
+  .devoir-text { flex: 1; white-space: pre-wrap; word-break: break-word;}
+  .devoir-text.done { text-decoration: line-through; color: var(--muted); }
+  .devoir-theme { font-size: 10px; font-weight: 700; color: var(--primary); text-transform: uppercase; margin-bottom:2px; }
 
-  /* ===== OVERVIEW ===== */
-  .overview-eleve { font-size: 18px; font-weight: 800; }
-  .stats-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
-  .stat-chip { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 99px; }
-  .exo-compact { padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; }
-  .notif-pill { background: var(--bad-bg); color: var(--bad); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 99px; }
-
-  /* ===== FILTERS ===== */
-  .filters { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
-  .filters::-webkit-scrollbar { display: none; }
-  .filter-input, .filter-select {
-    padding: 9px 13px; border: 1.5px solid var(--border);
-    border-radius: 12px; font-family: inherit; font-size: 13px;
-    background: white; white-space: nowrap; flex-shrink: 0;
-  }
-  .filter-input { min-width: 160px; }
-  .filter-input:focus, .filter-select:focus { outline: none; border-color: var(--primary); }
-
-  /* ===== BUTTONS ===== */
-  .btn-primary {
-    background: var(--primary); color: white;
-    border: none; border-radius: 13px;
-    padding: 11px 18px; font-size: 13px; font-weight: 700;
-    cursor: pointer; font-family: inherit;
-    display: flex; align-items: center; gap: 6px;
-    white-space: nowrap; transition: all 0.15s;
-  }
-  .btn-primary:active { transform: scale(0.97); opacity: 0.9; }
-  .btn-sm {
-    padding: 6px 12px; border-radius: 9px; border: none;
-    font-family: inherit; font-size: 12px; font-weight: 600;
-    cursor: pointer; transition: all 0.15s;
-  }
-  .btn-sm:active { transform: scale(0.95); }
-  .btn-edit { background: var(--primary-light); color: var(--primary); }
-  .btn-del { background: var(--bad-bg); color: var(--bad); }
-  .btn-reply { background: var(--ok-bg); color: var(--ok); width: 100%; text-align: center; padding: 10px; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; border-radius: 12px; border: none;}
-
-  /* ===== MODAL ===== */
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 500;
-    background: rgba(0,0,0,0.5);
-    display: none; align-items: flex-end; justify-content: center;
-    padding: 0;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: white;
-    border-radius: 24px 24px 0 0;
-    padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
-    width: 100%; max-width: 600px;
-    max-height: 90vh; overflow-y: auto;
-    animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  .modal-handle { width: 36px; height: 4px; background: #ddd; border-radius: 99px; margin: 0 auto 20px; }
-  .modal-title { font-size: 20px; font-weight: 900; margin-bottom: 20px; letter-spacing: -0.5px; }
-  .form-group { margin-bottom: 14px; }
-  .form-label { display: block; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-  .form-input, .form-select, .form-textarea {
-    width: 100%; padding: 13px 14px;
-    border: 1.5px solid var(--border); border-radius: 12px;
-    font-family: inherit; font-size: 14px; background: var(--bg);
-    transition: border-color 0.2s; color: var(--text);
-  }
-  .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--primary); background: white; }
-  .form-textarea { resize: vertical; min-height: 90px; }
-  .check-row { display: flex; align-items: center; gap: 10px; }
-  .check-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); }
-  .check-row label { font-size: 14px; font-weight: 500; }
-  .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-  .btn-cancel {
-    flex: 1; padding: 13px; border: 1.5px solid var(--border);
-    background: white; border-radius: 13px; font-family: inherit;
-    font-size: 14px; font-weight: 600; cursor: pointer;
-  }
-  .btn-confirm { flex: 2; }
-
-  /* Dest grid */
-  .dest-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-  .dest-item { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 500; }
-  .dest-item input { accent-color: var(--primary); }
-
-  /* Photo preview */
-  .photo-preview img { width: 100%; max-height: 150px; object-fit: contain; border-radius: 12px; margin-top: 8px; }
+  /* ===== DOCUMENTS ===== */
+  .doc-chapter-group { margin-bottom: 20px; }
+  .doc-chapter-title { font-size: 14px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; border-bottom: 2px solid var(--primary-light); padding-bottom: 4px; }
+  .doc-card { background: white; border-radius: 14px; padding: 12px 16px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; }
+  .doc-card:active { transform: scale(0.98); background: var(--bg); }
+  .doc-info { display: flex; align-items: center; gap: 12px; flex: 1; overflow: hidden; }
+  .doc-icon { font-size: 24px; }
+  .doc-details { flex: 1; overflow: hidden; }
+  .doc-title { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
   /* States */
   .empty-state { text-align: center; padding: 50px 20px; color: var(--muted); font-size: 15px; }
   .empty-state .emoji { font-size: 48px; display: block; margin-bottom: 12px; }
   .loading { text-align: center; padding: 40px; color: var(--muted); }
-  .error-msg { text-align: center; padding: 20px; color: var(--bad); font-size: 14px; background: var(--bad-bg); border-radius: 12px; }
-
-  /* ===== TODO ===== */
-  .todo-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .todo-col { background: white; border-radius: 18px; padding: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); border: 1px solid var(--border); min-height: 200px; }
-  .todo-col-header { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-  .todo-col-header-samia { color: #B55A8A !important; }
-  .todo-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; line-height: 1.4; }
-  .todo-item:last-child { border-bottom: none; }
-  .todo-checkbox { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--border); flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.2s; margin-top: 1px; background: white; }
-  .todo-checkbox.checked { background: var(--ok); border-color: var(--ok); color: white; }
-  .todo-checkbox-samia.checked { background: #B55A8A; border-color: #B55A8A; }
-  .todo-text { flex: 1; }
-  .todo-text.done { text-decoration: line-through; color: var(--muted); }
-  .todo-theme { font-size: 10px; font-weight: 700; color: var(--primary); text-transform: uppercase; }
-  .todo-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 13px; padding: 2px 4px; border-radius: 6px; flex-shrink: 0; transition: all 0.2s; }
-  .todo-del:active { color: var(--bad); background: var(--bad-bg); }
-  .todo-empty { text-align: center; padding: 20px 10px; color: var(--muted); font-size: 12px; }
-
-  /* Teacher badge */
-  .teacher-badge { background: #FFF8E1; color: #F57F17; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-left: 6px; }
-  
-  /* Modal Chat Full Height */
-  .modal-chat { height: 85vh; display: flex; flex-direction: column; padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
-  .modal-chat .chat-container { border: none; box-shadow: none; height: 100%; flex: 1; }
 </style>
 </head>
 <body>
@@ -366,30 +199,19 @@
   <div class="login-title">MathSpace</div>
   <div class="login-sub">Cours particuliers de maths</div>
 
-  <div class="login-grid" id="user-grid">
-    </div>
+  <div class="login-grid" id="user-grid"></div>
 
   <div class="pin-container" id="pin-section" style="display:none">
     <div class="pin-label" id="pin-label">Entre ton code PIN</div>
     <div class="pin-dots">
-      <div class="pin-dot" id="dot0"></div>
-      <div class="pin-dot" id="dot1"></div>
-      <div class="pin-dot" id="dot2"></div>
-      <div class="pin-dot" id="dot3"></div>
+      <div class="pin-dot" id="dot0"></div><div class="pin-dot" id="dot1"></div>
+      <div class="pin-dot" id="dot2"></div><div class="pin-dot" id="dot3"></div>
     </div>
     <div class="pin-pad">
-      <button class="pin-key" onclick="pinPress('1')">1</button>
-      <button class="pin-key" onclick="pinPress('2')">2</button>
-      <button class="pin-key" onclick="pinPress('3')">3</button>
-      <button class="pin-key" onclick="pinPress('4')">4</button>
-      <button class="pin-key" onclick="pinPress('5')">5</button>
-      <button class="pin-key" onclick="pinPress('6')">6</button>
-      <button class="pin-key" onclick="pinPress('7')">7</button>
-      <button class="pin-key" onclick="pinPress('8')">8</button>
-      <button class="pin-key" onclick="pinPress('9')">9</button>
-      <button class="pin-key empty"></button>
-      <button class="pin-key" onclick="pinPress('0')">0</button>
-      <button class="pin-key del" onclick="pinDel()"><i class="fa fa-delete-left"></i></button>
+      <button class="pin-key" onclick="pinPress('1')">1</button><button class="pin-key" onclick="pinPress('2')">2</button><button class="pin-key" onclick="pinPress('3')">3</button>
+      <button class="pin-key" onclick="pinPress('4')">4</button><button class="pin-key" onclick="pinPress('5')">5</button><button class="pin-key" onclick="pinPress('6')">6</button>
+      <button class="pin-key" onclick="pinPress('7')">7</button><button class="pin-key" onclick="pinPress('8')">8</button><button class="pin-key" onclick="pinPress('9')">9</button>
+      <button class="pin-key empty"></button><button class="pin-key" onclick="pinPress('0')">0</button><button class="pin-key del" onclick="pinDel()"><i class="fa fa-delete-left"></i></button>
     </div>
     <div class="login-error" id="login-error">❌ Code incorrect</div>
   </div>
@@ -400,9 +222,7 @@
   <div class="topbar">
     <div class="topbar-left">
       <div class="topbar-avatar" id="topbar-avatar"></div>
-      <div>
-        <div class="topbar-name" id="topbar-name"></div>
-      </div>
+      <div class="topbar-name" id="topbar-name"></div>
     </div>
     <div class="topbar-right">
       <button onclick="logout()"><i class="fa fa-right-from-bracket"></i></button>
@@ -415,6 +235,7 @@
       <button class="btn-primary" onclick="openExoModal()"><i class="fa fa-plus"></i> Ajouter</button>
     </div>
     <div class="filters">
+      <select class="filter-select teacher-eleve-filter" id="filter-eleve-exos" onchange="loadExos()"></select>
       <input class="filter-input" id="filter-theme" placeholder="🔍 Thème..." oninput="loadExos()">
       <select class="filter-select" id="filter-statut" onchange="loadExos()">
         <option value="">Tous statuts</option>
@@ -427,52 +248,63 @@
     <div id="exo-list"></div>
   </div>
 
-  <div class="page" id="page-chat">
+  <div class="page" id="page-devoirs">
     <div class="section-header">
-      <div class="section-title">💬 Messagerie</div>
+      <div class="section-title">📝 Devoirs</div>
+      <button class="btn-primary" onclick="openDevoirModal()"><i class="fa fa-plus"></i> Ajouter</button>
     </div>
-    <div class="chat-container">
-      <div class="chat-box" id="student-chat-box">
-        </div>
-      <div class="chat-input-area">
-        <input type="file" id="file-upload-student" style="display:none;" accept="image/*" onchange="sendChatPhoto(this, false)">
-        <button class="chat-photo-btn" onclick="document.getElementById('file-upload-student').click()">
-          <i class="fa fa-camera"></i>
-        </button>
-        <input type="text" id="student-chat-input" placeholder="Écris un message à Samia..." onkeypress="if(event.key==='Enter') sendChatMessage()">
-        <button class="chat-send-btn" onclick="sendChatMessage()"><i class="fa fa-paper-plane"></i></button>
+    <div class="filters">
+      <select class="filter-select teacher-eleve-filter" id="filter-eleve-devoirs" onchange="loadDevoirs()"></select>
+    </div>
+    <div class="devoirs-columns">
+      <div class="devoirs-col">
+        <div class="devoirs-col-header"><i class="fa fa-school"></i> École (Pronote)</div>
+        <div id="devoirs-ecole"></div>
+      </div>
+      <div class="devoirs-col">
+        <div class="devoirs-col-header devoirs-col-header-samia"><i class="fa fa-chalkboard-user"></i> Devoirs Samia</div>
+        <div id="devoirs-samia"></div>
       </div>
     </div>
+  </div>
+
+  <div class="page" id="page-docs">
+    <div class="section-header">
+      <div class="section-title">📂 Documents</div>
+      <button class="btn-primary" onclick="openDocModal()"><i class="fa fa-plus"></i> Nouveau</button>
+    </div>
+    <div class="filters">
+      <select class="filter-select teacher-eleve-filter" id="filter-eleve-docs" onchange="loadDocs()"></select>
+    </div>
+    <div id="docs-list"></div>
   </div>
 
   <div class="page" id="page-fiches">
     <div class="section-header">
       <div class="section-title">📄 Fiches de cours</div>
-      <button class="btn-primary" id="btn-add-fiche" onclick="openFicheModal()" style="display:none"><i class="fa fa-plus"></i> Ajouter</button>
+      <button class="btn-primary" id="btn-add-fiche" onclick="openFicheModal()" style="display:none"><i class="fa fa-plus"></i> Créer</button>
     </div>
     <div id="fiche-list"></div>
   </div>
 
-  <div class="page" id="page-todo">
+  <div class="page" id="page-chat">
     <div class="section-header">
-      <div class="section-title">✅ À faire</div>
-      <button class="btn-primary" onclick="openTodoModal()"><i class="fa fa-plus"></i> Ajouter</button>
+      <div class="section-title">💬 Messagerie</div>
     </div>
-    <div class="todo-columns">
-      <div class="todo-col">
-        <div class="todo-col-header"><i class="fa fa-user"></i> Seule</div>
-        <div id="todo-seule"></div>
-      </div>
-      <div class="todo-col">
-        <div class="todo-col-header todo-col-header-samia"><i class="fa fa-chalkboard-user"></i> Avec Samia</div>
-        <div id="todo-samia"></div>
+    <div class="chat-container">
+      <div class="chat-box" id="student-chat-box"></div>
+      <div class="chat-input-area">
+        <input type="file" id="file-upload-student" style="display:none;" accept="image/*" onchange="sendChatPhoto(this, false)">
+        <button class="chat-photo-btn" onclick="document.getElementById('file-upload-student').click()"><i class="fa fa-camera"></i></button>
+        <input type="text" id="student-chat-input" placeholder="Message..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+        <button class="chat-send-btn" onclick="sendChatMessage()"><i class="fa fa-paper-plane"></i></button>
       </div>
     </div>
   </div>
 
   <div class="page" id="page-overview">
     <div class="section-header">
-      <div class="section-title">👩‍🏫 Élèves</div>
+      <div class="section-title">👩‍🏫 Suivi Élèves</div>
     </div>
     <div id="overview-list"></div>
   </div>
@@ -481,21 +313,25 @@
     <button class="nav-btn active" id="nav-exos" onclick="showPage('exos')">
       <i class="fa fa-book-open"></i><span>Exercices</span>
     </button>
-    <button class="nav-btn" id="nav-chat" onclick="showPage('chat')">
-      <i class="fa fa-comments"></i><span>Messages</span>
-      <div class="badge" id="badge-chat">0</div>
+    <button class="nav-btn" id="nav-devoirs" onclick="showPage('devoirs')">
+      <i class="fa fa-list-check"></i><span>Devoirs</span>
     </button>
-    <button class="nav-btn" id="nav-todo" onclick="showPage('todo')">
-      <i class="fa fa-circle-check"></i><span>À faire</span>
+    <button class="nav-btn" id="nav-docs" onclick="showPage('docs')">
+      <i class="fa fa-folder-open"></i><span>Docs</span>
     </button>
     <button class="nav-btn" id="nav-fiches" onclick="showPage('fiches')">
       <i class="fa fa-file-lines"></i><span>Fiches</span>
+    </button>
+    <button class="nav-btn" id="nav-chat" onclick="showPage('chat')">
+      <i class="fa fa-comments"></i><span>Messages</span>
+      <div class="badge" id="badge-chat">0</div>
     </button>
     <button class="nav-btn" id="nav-overview" onclick="showPage('overview')" style="display:none">
       <i class="fa fa-users"></i><span>Élèves</span>
       <div class="badge" id="badge-overview">0</div>
     </button>
   </nav>
+
 </div>
 
 <div class="modal-overlay" id="samia-chat-modal">
@@ -503,13 +339,10 @@
     <div class="modal-handle"></div>
     <div class="modal-title" id="samia-chat-title">Chat avec ...</div>
     <div class="chat-container">
-      <div class="chat-box" id="samia-chat-box">
-        </div>
+      <div class="chat-box" id="samia-chat-box"></div>
       <div class="chat-input-area">
         <input type="file" id="file-upload-samia" style="display:none;" accept="image/*" onchange="sendChatPhoto(this, true)">
-        <button class="chat-photo-btn" onclick="document.getElementById('file-upload-samia').click()">
-          <i class="fa fa-camera"></i>
-        </button>
+        <button class="chat-photo-btn" onclick="document.getElementById('file-upload-samia').click()"><i class="fa fa-camera"></i></button>
         <input type="text" id="samia-chat-input" placeholder="Répondre..." onkeypress="if(event.key==='Enter') sendSamiaChatMessage()">
         <button class="chat-send-btn" onclick="sendSamiaChatMessage()"><i class="fa fa-paper-plane"></i></button>
       </div>
@@ -517,28 +350,64 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="todo-modal">
+<div class="modal-overlay" id="devoirs-modal">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">Ajouter une tâche</div>
-    <div class="form-group">
-      <label class="form-label">Tâche *</label>
-      <input class="form-input" id="todo-texte" placeholder="Ex: Refaire exercices p.45, Revoir les dérivées…">
+    <div class="modal-title">Ajouter un devoir</div>
+    <div class="form-group" id="devoirs-eleve-group" style="display:none;">
+      <label class="form-label">Pour quel élève ?</label>
+      <select class="form-select" id="devoirs-eleve"></select>
     </div>
     <div class="form-group">
-      <label class="form-label">Thème / Chapitre</label>
-      <input class="form-input" id="todo-theme" placeholder="Ex: Trigonométrie…">
+      <label class="form-label">Matière / Chapitre</label>
+      <input class="form-input" id="devoirs-theme" placeholder="Ex: Maths - Probabilités">
     </div>
     <div class="form-group">
-      <label class="form-label">Type</label>
-      <select class="form-select" id="todo-type">
-        <option value="seule">👤 À faire seule</option>
-        <option value="samia">👩‍🏫 À faire avec Samia</option>
+      <label class="form-label">Description du devoir (Colle Pronote ici) *</label>
+      <textarea class="form-textarea" id="devoirs-texte" placeholder="Faire l'exercice 5 p. 42..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Type de devoir</label>
+      <select class="form-select" id="devoirs-type">
+        <option value="ecole">🏫 École (Pronote / Lycée)</option>
+        <option value="samia">👩‍🏫 Donné par Samia</option>
       </select>
     </div>
     <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeTodoModal()">Annuler</button>
-      <button class="btn-primary btn-confirm" id="todo-save-btn" onclick="saveTodo()">Ajouter ✅</button>
+      <button class="btn-cancel" onclick="closeDevoirModal()">Annuler</button>
+      <button class="btn-primary btn-confirm" id="devoirs-save-btn" onclick="saveDevoir()">Ajouter ✅</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="docs-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Partager un document</div>
+    <div class="form-group" id="docs-eleve-group" style="display:none;">
+      <label class="form-label">Pour quel élève ?</label>
+      <select class="form-select" id="docs-eleve"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Titre du document *</label>
+      <input class="form-input" id="docs-titre" placeholder="Ex: Correction DM 2">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Chapitre concerné *</label>
+      <input class="form-input" id="docs-chapitre" placeholder="Ex: Dérivation, Suites...">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Option 1: Uploader Fichier (PDF ou Image, Max 700Ko)</label>
+      <input type="file" class="form-input" id="docs-file" accept="application/pdf, image/*" onchange="previewDocFile('docs-file', 'docs-preview')">
+      <div id="docs-preview"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Option 2: Lien (Google Drive, Pronote, etc.)</label>
+      <input type="url" class="form-input" id="docs-url" placeholder="https://...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeDocModal()">Annuler</button>
+      <button class="btn-primary btn-confirm" id="docs-save-btn" onclick="saveDoc()">Enregistrer 📂</button>
     </div>
   </div>
 </div>
@@ -547,58 +416,15 @@
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title" id="exo-modal-title">Ajouter un exercice</div>
-    <div class="form-group">
-      <label class="form-label">Titre / Intitulé *</label>
-      <input class="form-input" id="exo-titre" placeholder="Ex: Exercice 6 p.56">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Thème / Chapitre</label>
-      <input class="form-input" id="exo-theme" placeholder="Ex: Trigonométrie, Dérivées…">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Source</label>
-      <select class="form-select" id="exo-source">
-        <option value="livre">📖 Livre</option>
-        <option value="internet">🌐 Internet</option>
-        <option value="prof">👩‍🏫 Donné par Samia</option>
-        <option value="autre">📝 Autre</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Fait</label>
-      <select class="form-select" id="exo-type">
-        <option value="seule">Seule</option>
-        <option value="ensemble">Avec Samia</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Résultat</label>
-      <select class="form-select" id="exo-statut">
-        <option value="bien_reussi">✅ Bien réussi</option>
-        <option value="compris_revoir">🔄 Compris mais à revoir</option>
-        <option value="a_revoir">⚠️ Difficile, à revoir</option>
-        <option value="rien_compris">❌ Rien compris</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Notes / Corrections</label>
-      <textarea class="form-textarea" id="exo-note" placeholder="Ce que tu as compris, les erreurs…"></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Photo (brouillon, correction…)</label>
-      <input type="file" class="form-input" id="exo-photo" accept="image/*" onchange="previewPhoto('exo-photo','exo-photo-preview')">
-      <div class="photo-preview" id="exo-photo-preview"></div>
-    </div>
-    <div class="form-group">
-      <div class="check-row">
-        <input type="checkbox" id="exo-partage">
-        <label for="exo-partage">📤 Partager avec Samia</label>
-      </div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeExoModal()">Annuler</button>
-      <button class="btn-primary btn-confirm" id="exo-save-btn" onclick="saveExo()">Enregistrer</button>
-    </div>
+    <div class="form-group"><label class="form-label">Titre / Intitulé *</label><input class="form-input" id="exo-titre"></div>
+    <div class="form-group"><label class="form-label">Thème / Chapitre</label><input class="form-input" id="exo-theme"></div>
+    <div class="form-group"><label class="form-label">Source</label><select class="form-select" id="exo-source"><option value="livre">📖 Livre</option><option value="internet">🌐 Internet</option><option value="prof">👩‍🏫 Samia</option><option value="autre">📝 Autre</option></select></div>
+    <div class="form-group"><label class="form-label">Fait</label><select class="form-select" id="exo-type"><option value="seule">Seule</option><option value="ensemble">Avec Samia</option></select></div>
+    <div class="form-group"><label class="form-label">Résultat</label><select class="form-select" id="exo-statut"><option value="bien_reussi">✅ Bien réussi</option><option value="compris_revoir">🔄 À revoir</option><option value="a_revoir">⚠️ Difficile</option><option value="rien_compris">❌ Rien compris</option></select></div>
+    <div class="form-group"><label class="form-label">Notes</label><textarea class="form-textarea" id="exo-note"></textarea></div>
+    <div class="form-group"><label class="form-label">Photo</label><input type="file" class="form-input" id="exo-photo" accept="image/*" onchange="previewPhoto('exo-photo','exo-photo-preview')"><div class="photo-preview" id="exo-photo-preview"></div></div>
+    <div class="form-group"><div class="check-row"><input type="checkbox" id="exo-partage"><label for="exo-partage">📤 Partager avec Samia</label></div></div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeExoModal()">Annuler</button><button class="btn-primary btn-confirm" id="exo-save-btn" onclick="saveExo()">Enregistrer</button></div>
   </div>
 </div>
 
@@ -606,27 +432,11 @@
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title">Nouvelle fiche de cours</div>
-    <div class="form-group">
-      <label class="form-label">Titre *</label>
-      <input class="form-input" id="fiche-titre" placeholder="Ex: Fiche — Dérivées">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Thème</label>
-      <input class="form-input" id="fiche-theme" placeholder="Ex: Analyse…">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Lien Interactif (URL de ta page HTML, GeoGebra...)</label>
-      <input type="url" class="form-input" id="fiche-url" placeholder="Ex: https://ton-site.com/fiche.html">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Ou Contenu texte simple</label>
-      <textarea class="form-textarea" id="fiche-contenu" placeholder="Cours, formules, méthodes…" style="min-height:90px"></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Image d'illustration (Optionnel)</label>
-      <input type="file" class="form-input" id="fiche-img" accept="image/*" onchange="previewPhoto('fiche-img','fiche-img-preview')">
-      <div class="photo-preview" id="fiche-img-preview"></div>
-    </div>
+    <div class="form-group"><label class="form-label">Titre *</label><input class="form-input" id="fiche-titre"></div>
+    <div class="form-group"><label class="form-label">Thème</label><input class="form-input" id="fiche-theme"></div>
+    <div class="form-group"><label class="form-label">Lien Interactif (URL GeoGebra...)</label><input type="url" class="form-input" id="fiche-url"></div>
+    <div class="form-group"><label class="form-label">Ou Contenu texte simple</label><textarea class="form-textarea" id="fiche-contenu" style="min-height:90px"></textarea></div>
+    <div class="form-group"><label class="form-label">Image</label><input type="file" class="form-input" id="fiche-img" accept="image/*" onchange="previewPhoto('fiche-img','fiche-img-preview')"><div class="photo-preview" id="fiche-img-preview"></div></div>
     <div class="form-group">
       <label class="form-label">Pour</label>
       <div class="dest-grid">
@@ -640,12 +450,10 @@
         <label class="dest-item"><input type="checkbox" class="fiche-dest" value="Cherryl"> Cherryl</label>
       </div>
     </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeFicheModal()">Annuler</button>
-      <button class="btn-primary btn-confirm" id="fiche-save-btn" onclick="saveFiche()">Publier 📤</button>
-    </div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeFicheModal()">Annuler</button><button class="btn-primary btn-confirm" id="fiche-save-btn" onclick="saveFiche()">Publier 📤</button></div>
   </div>
 </div>
+
 
 <script>
 window.addEventListener("load", function() {
@@ -665,7 +473,6 @@ var db;
   db = firebase.firestore();
 })();
 
-// ===== CONFIG =====
 var USERS = {
   "Elyne":    { pin: "1111", color: "#E8826A" },
   "Khadija":  { pin: "2222", color: "#5BA08A" },
@@ -678,78 +485,67 @@ var USERS = {
 };
 
 var STATUTS = {
-  "bien_reussi":   { label: "✅ Bien réussi",       cls: "s-ok" },
-  "compris_revoir":{ label: "🔄 Compris à revoir",  cls: "s-mid" },
-  "a_revoir":      { label: "⚠️ Difficile",          cls: "s-warn" },
-  "rien_compris":  { label: "❌ Rien compris",       cls: "s-bad" }
+  "bien_reussi": { label: "✅ Bien réussi", cls: "s-ok" },
+  "compris_revoir": { label: "🔄 À revoir", cls: "s-mid" },
+  "a_revoir": { label: "⚠️ Difficile", cls: "s-warn" },
+  "rien_compris": { label: "❌ Rien compris", cls: "s-bad" }
 };
 
 var currentUser = null;
 var selectedUser = null;
 var pinInput = "";
 var editExoId = null;
-
-// Chat variables
 var chatUnsubscribe = null;
 var notifUnsubscribe = null;
 var currentChatStudent = null;
 var initialLoadDone = false; 
-
-// Audio pour les notifications
 var notifSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2354/2354-preview.mp3");
 
-// ===== LOGIN =====
-function buildUserGrid() {
-  const grid = document.getElementById("user-grid");
-  grid.innerHTML = Object.entries(USERS).map(([name, u]) => `
-    <div class="user-btn" id="ubtn-${name}" onclick="selectUser('${name}')">
-      <div class="avatar" style="background:${u.color}">${name[0]}</div>
-      <span>${name}</span>
-    </div>
-  `).join("");
-}
+// Build Login
+const grid = document.getElementById("user-grid");
+grid.innerHTML = Object.entries(USERS).map(([name, u]) => `
+  <div class="user-btn" id="ubtn-${name}" onclick="selectUser('${name}')">
+    <div class="avatar" style="background:${u.color}">${name[0]}</div>
+    <span>${name}</span>
+  </div>
+`).join("");
 
 function selectUser(name) {
-  selectedUser = name;
-  pinInput = "";
+  selectedUser = name; pinInput = "";
   document.querySelectorAll(".user-btn").forEach(b => b.classList.remove("selected"));
   document.getElementById("ubtn-" + name).classList.add("selected");
   document.getElementById("pin-section").style.display = "block";
   document.getElementById("pin-label").textContent = `PIN pour ${name}`;
-  updateDots();
-  document.getElementById("login-error").style.display = "none";
+  updateDots(); document.getElementById("login-error").style.display = "none";
 }
 window.selectUser = selectUser;
 
 function pinPress(d) {
   if (pinInput.length >= 4) return;
-  pinInput += d;
-  updateDots();
+  pinInput += d; updateDots();
   if (pinInput.length === 4) setTimeout(checkPin, 200);
 }
 window.pinPress = pinPress;
-
-function pinDel() {
-  pinInput = pinInput.slice(0, -1);
-  updateDots();
-}
+function pinDel() { pinInput = pinInput.slice(0, -1); updateDots(); }
 window.pinDel = pinDel;
-
-function updateDots() {
-  for (let i = 0; i < 4; i++) {
-    document.getElementById("dot" + i).classList.toggle("filled", i < pinInput.length);
-  }
-}
+function updateDots() { for (let i=0; i<4; i++) { document.getElementById("dot"+i).classList.toggle("filled", i < pinInput.length); } }
 
 function checkPin() {
-  if (!selectedUser) return;
-  if (USERS[selectedUser].pin === pinInput) {
-    doLogin(selectedUser);
-  } else {
-    document.getElementById("login-error").style.display = "block";
-    pinInput = "";
-    updateDots();
-  }
+  if (USERS[selectedUser].pin === pinInput) { doLogin(selectedUser); } 
+  else { document.getElementById("login-error").style.display = "block"; pinInput = ""; updateDots(); }
+}
+
+function populateTeacherFilters() {
+  const options = `<option value="">Tous les élèves</option>` + 
+    Object.keys(USERS).filter(u => !USERS[u].isTeacher).map(u => `<option value="${u}">${u}</option>`).join("");
+  document.querySelectorAll(".teacher-eleve-filter").forEach(sel => {
+    sel.innerHTML = options;
+    sel.style.display = "inline-block";
+  });
+  // Dropdown in Modals
+  const modOptions = Object.keys(USERS).filter(u => !USERS[u].isTeacher).map(u => `<option value="${u}">${u}</option>`).join("");
+  document.getElementById("devoirs-eleve").innerHTML = modOptions;
+  document.getElementById("docs-eleve").innerHTML = modOptions;
 }
 
 function doLogin(name) {
@@ -758,17 +554,22 @@ function doLogin(name) {
   document.getElementById("login-screen").style.display = "none";
   document.getElementById("app").style.display = "block";
   document.getElementById("topbar-name").textContent = name;
-  const av = document.getElementById("topbar-avatar");
-  av.textContent = name[0];
-  av.style.background = u.color;
+  document.getElementById("topbar-avatar").textContent = name[0];
+  document.getElementById("topbar-avatar").style.background = u.color;
   
   if (u.isTeacher) {
     document.getElementById("nav-overview").style.display = "flex";
     document.getElementById("nav-chat").style.display = "none";
     document.getElementById("btn-add-fiche").style.display = "flex";
+    document.getElementById("devoirs-eleve-group").style.display = "block";
+    document.getElementById("docs-eleve-group").style.display = "block";
+    populateTeacherFilters();
   } else {
     document.getElementById("nav-overview").style.display = "none";
     document.getElementById("nav-chat").style.display = "flex";
+    document.getElementById("devoirs-eleve-group").style.display = "none";
+    document.getElementById("docs-eleve-group").style.display = "none";
+    document.querySelectorAll(".teacher-eleve-filter").forEach(el => el.style.display = "none");
   }
   
   initNotifications(u.isTeacher);
@@ -778,42 +579,37 @@ function doLogin(name) {
 function logout() {
   if (chatUnsubscribe) chatUnsubscribe();
   if (notifUnsubscribe) notifUnsubscribe();
-  currentUser = null; selectedUser = null; pinInput = "";
-  initialLoadDone = false;
-  document.getElementById("login-screen").style.display = "flex";
-  document.getElementById("app").style.display = "none";
-  document.getElementById("pin-section").style.display = "none";
-  document.getElementById("login-error").style.display = "none";
-  document.getElementById("nav-overview").style.display = "none";
-  document.getElementById("btn-add-fiche").style.display = "none";
-  document.getElementById("badge-chat").style.display = "none";
-  document.getElementById("badge-overview").style.display = "none";
-  updateDots();
-  document.querySelectorAll(".user-btn").forEach(b => b.classList.remove("selected"));
+  window.location.reload(); // Hard reset simple et efficace
 }
 window.logout = logout;
 
-// ===== PAGES =====
 function showPage(p) {
   if (chatUnsubscribe && p !== 'chat') { chatUnsubscribe(); } 
-  
   document.querySelectorAll(".page").forEach(x => x.classList.remove("active"));
   document.querySelectorAll(".nav-btn").forEach(x => x.classList.remove("active"));
-  var pageMap = {exos:'exos', chat:'chat', fiches:'fiches', todo:'todo', overview:'overview'};
-  document.getElementById("page-" + (pageMap[p] || p)).classList.add("active");
   
+  document.getElementById("page-" + p).classList.add("active");
   var navBtn = document.getElementById("nav-" + p);
   if (navBtn) navBtn.classList.add("active");
   
   if (p === "exos") loadExos();
+  if (p === "devoirs") loadDevoirs();
+  if (p === "docs") loadDocs();
   if (p === "chat") initStudentChat();
   if (p === "fiches") loadFiches();
-  if (p === "todo") loadTodo();
   if (p === "overview") loadOverview();
 }
 window.showPage = showPage;
 
-// ===== PHOTO =====
+function getStudentTarget(filterId) {
+  if (USERS[currentUser]?.isTeacher) {
+    const val = document.getElementById(filterId).value;
+    return val ? [val] : Object.keys(USERS).filter(u => !USERS[u].isTeacher);
+  }
+  return [currentUser];
+}
+
+// ===== PHOTO & FILE HELPERS =====
 function previewPhoto(inputId, previewId) {
   const file = document.getElementById(inputId).files[0];
   if (!file) return;
@@ -822,8 +618,7 @@ function previewPhoto(inputId, previewId) {
     const img = new Image();
     img.onload = () => {
       const canvas = document.createElement("canvas");
-      const MAX = 800;
-      let w = img.width, h = img.height;
+      const MAX = 800; let w = img.width, h = img.height;
       if (w > MAX) { h = h * MAX / w; w = MAX; }
       if (h > MAX) { w = w * MAX / h; h = MAX; }
       canvas.width = w; canvas.height = h;
@@ -838,324 +633,277 @@ function previewPhoto(inputId, previewId) {
 }
 window.previewPhoto = previewPhoto;
 
-function getPhotoBase64(inputId) {
-  return document.getElementById(inputId).dataset.base64 || null;
-}
+function getPhotoBase64(inputId) { return document.getElementById(inputId).dataset.base64 || null; }
 
-// ===== MESSAGERIE (CHAT) ET NOTIFICATIONS =====
-
-function initNotifications(isTeacher) {
-  notifUnsubscribe = db.collection("messages").where("read", "==", false).onSnapshot(snap => {
-    let unreadCount = 0;
-    let hasNewMessage = false;
-    
-    snap.forEach(doc => {
-      let m = doc.data();
-      if (isTeacher && m.sender !== "Samia") {
-        unreadCount++;
-        hasNewMessage = true;
-      }
-      if (!isTeacher && m.eleve === currentUser && m.sender === "Samia") {
-        unreadCount++;
-        hasNewMessage = true;
-      }
-    });
-    
-    if (initialLoadDone && hasNewMessage && unreadCount > 0) {
-      notifSound.play().catch(e => console.log("Son bloqué par le navigateur", e));
-    }
-    initialLoadDone = true;
-    
-    const badgeId = isTeacher ? "badge-overview" : "badge-chat";
-    const badgeEl = document.getElementById(badgeId);
-    if (unreadCount > 0) {
-      badgeEl.textContent = unreadCount;
-      badgeEl.style.display = "block";
-    } else {
-      badgeEl.style.display = "none";
-    }
-    
-    if (isTeacher && document.getElementById("page-overview").classList.contains("active")) {
-      loadOverview();
-    }
-  });
-}
-
-async function markChatAsRead(eleveName, isTeacher) {
-  try {
-    const snap = await db.collection("messages")
-      .where("eleve", "==", eleveName)
-      .where("read", "==", false).get();
-      
-    snap.docs.forEach(doc => {
-      let m = doc.data();
-      if ((isTeacher && m.sender !== "Samia") || (!isTeacher && m.sender === "Samia")) {
-        db.collection("messages").doc(doc.id).update({ read: true });
-      }
-    });
-  } catch(e) { console.error("Erreur read", e); }
-}
-
-function renderChat(msgs, containerId) {
-  const box = document.getElementById(containerId);
-  if (msgs.length === 0) {
-    box.innerHTML = `<div class="empty-state"><span class="emoji">💬</span>Aucun message.<br>Envoie un message pour commencer !</div>`;
+function previewDocFile(inputId, previewId) {
+  const file = document.getElementById(inputId).files[0];
+  if (!file) return;
+  
+  if (file.size > 750000) {
+    alert("Fichier trop volumineux (Max 700 Ko). Si c'est un grand PDF, merci d'utiliser un lien Google Drive ou Pronote.");
+    document.getElementById(inputId).value = "";
     return;
   }
-  
-  box.innerHTML = msgs.map(m => {
-    const isMe = m.sender === currentUser;
-    const timeStr = m.date ? new Date(m.date).toLocaleTimeString("fr-FR", {hour: '2-digit', minute:'2-digit'}) : "";
-    return `
-      <div class="chat-msg ${isMe ? 'me' : 'other'}">
-        ${m.photoBase64 ? `<img src="${m.photoBase64}" class="chat-img" onclick="window.open(this.src)">` : ""}
-        ${m.text ? `<div>${m.text}</div>` : ""}
-        <div class="chat-time">${timeStr}</div>
-      </div>
-    `;
-  }).join("");
-  
-  setTimeout(() => { box.scrollTop = box.scrollHeight; }, 100);
-}
 
-function sendChatPhoto(inputElement, isSamia) {
-  const file = inputElement.files[0];
-  if (!file) return;
   const reader = new FileReader();
   reader.onload = e => {
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const MAX = 800; 
-      let w = img.width, h = img.height;
-      if (w > MAX) { h = h * MAX / w; w = MAX; }
-      if (h > MAX) { w = w * MAX / h; h = MAX; }
-      canvas.width = w; canvas.height = h;
-      canvas.getContext("2d").drawImage(img, 0, 0, w, h);
-      const compressed = canvas.toDataURL("image/jpeg", 0.7);
-      
-      db.collection("messages").add({
-        eleve: isSamia ? currentChatStudent : currentUser,
-        sender: isSamia ? "Samia" : currentUser,
-        text: "", 
-        photoBase64: compressed,
-        date: new Date().toISOString(),
-        read: false,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-      inputElement.value = ""; 
-    };
-    img.src = e.target.result;
+    if (file.type.includes("image")) {
+      previewPhoto(inputId, previewId); // Fallback to image compression
+      document.getElementById(inputId).dataset.type = "img";
+    } else if (file.type === "application/pdf") {
+      document.getElementById(inputId).dataset.base64 = e.target.result;
+      document.getElementById(inputId).dataset.type = "pdf";
+      document.getElementById(previewId).innerHTML = `<div class="doc-preview-box">📄 Document PDF chargé (${Math.round(file.size/1024)} Ko)</div>`;
+    } else {
+      alert("Format non supporté. PDF ou Image uniquement.");
+      document.getElementById(inputId).value = "";
+    }
   };
   reader.readAsDataURL(file);
 }
-window.sendChatPhoto = sendChatPhoto;
+window.previewDocFile = previewDocFile;
 
-// Pour l'élève
-function initStudentChat() {
-  if (chatUnsubscribe) chatUnsubscribe();
-  document.getElementById("student-chat-box").innerHTML = `<div class="loading">Chargement...</div>`;
+
+// ===== DEVOIRS (EX-TODO) =====
+function openDevoirModal() {
+  document.getElementById("devoirs-texte").value = "";
+  document.getElementById("devoirs-theme").value = "";
+  document.getElementById("devoirs-type").value = "ecole";
+  document.getElementById("devoirs-modal").classList.add("open");
+}
+window.openDevoirModal = openDevoirModal;
+function closeDevoirModal() { document.getElementById("devoirs-modal").classList.remove("open"); }
+window.closeDevoirModal = closeDevoirModal;
+
+async function saveDevoir() {
+  var texte = document.getElementById("devoirs-texte").value.trim();
+  if (!texte) { alert("Écris le devoir !"); return; }
+  var btn = document.getElementById("devoirs-save-btn");
+  btn.textContent = "⏳ Ajout..."; btn.disabled = true;
   
-  markChatAsRead(currentUser, false);
-  
-  chatUnsubscribe = db.collection("messages")
-    .where("eleve", "==", currentUser)
-    .onSnapshot(snap => {
-      let msgs = snap.docs.map(d => d.data());
-      msgs.sort((a,b) => (a.date || "") > (b.date || "") ? 1 : -1);
-      renderChat(msgs, "student-chat-box");
-      markChatAsRead(currentUser, false);
+  let targetEleve = currentUser;
+  if (USERS[currentUser].isTeacher) targetEleve = document.getElementById("devoirs-eleve").value;
+
+  try {
+    await db.collection("devoirs").add({
+      eleve: targetEleve,
+      texte: texte,
+      theme: document.getElementById("devoirs-theme").value.trim(),
+      type: document.getElementById("devoirs-type").value,
+      done: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
+    closeDevoirModal();
+    loadDevoirs();
+  } catch(e) { alert("Erreur : " + e.message); }
+  btn.textContent = "Ajouter ✅"; btn.disabled = false;
 }
+window.saveDevoir = saveDevoir;
 
-function sendChatMessage() {
-  const input = document.getElementById("student-chat-input");
-  const text = input.value.trim();
-  if (!text) return;
-  
-  db.collection("messages").add({
-    eleve: currentUser,
-    sender: currentUser,
-    text: text,
-    date: new Date().toISOString(),
-    read: false,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
-  
-  input.value = "";
+async function toggleDevoir(id, done) {
+  await db.collection("devoirs").doc(id).update({ done: !done });
+  loadDevoirs();
 }
-window.sendChatMessage = sendChatMessage;
+window.toggleDevoir = toggleDevoir;
 
-// Pour Samia
-function openSamiaChat(eleveName) {
-  currentChatStudent = eleveName;
-  document.getElementById("samia-chat-title").textContent = `Chat avec ${eleveName}`;
-  document.getElementById("samia-chat-modal").classList.add("open");
-  document.getElementById("samia-chat-box").innerHTML = `<div class="loading">Chargement...</div>`;
-  
-  if (chatUnsubscribe) chatUnsubscribe();
-  
-  markChatAsRead(eleveName, true);
-  
-  chatUnsubscribe = db.collection("messages")
-    .where("eleve", "==", eleveName)
-    .onSnapshot(snap => {
-      let msgs = snap.docs.map(d => d.data());
-      msgs.sort((a,b) => (a.date || "") > (b.date || "") ? 1 : -1);
-      renderChat(msgs, "samia-chat-box");
-      markChatAsRead(eleveName, true); 
-    });
+async function deleteDevoir(id) {
+  await db.collection("devoirs").doc(id).delete();
+  loadDevoirs();
 }
-window.openSamiaChat = openSamiaChat;
+window.deleteDevoir = deleteDevoir;
 
-function closeSamiaChat() {
-  document.getElementById("samia-chat-modal").classList.remove("open");
-  if (chatUnsubscribe) { chatUnsubscribe(); chatUnsubscribe = null; }
-  currentChatStudent = null;
-}
-window.closeSamiaChat = closeSamiaChat;
-
-function sendSamiaChatMessage() {
-  const input = document.getElementById("samia-chat-input");
-  const text = input.value.trim();
-  if (!text || !currentChatStudent) return;
+async function loadDevoirs() {
+  var cEcole = document.getElementById("devoirs-ecole");
+  var cSamia = document.getElementById("devoirs-samia");
+  cEcole.innerHTML = `<div class="loading" style="font-size:13px">Chargement...</div>`;
+  cSamia.innerHTML = `<div class="loading" style="font-size:13px">Chargement...</div>`;
   
-  db.collection("messages").add({
-    eleve: currentChatStudent,
-    sender: "Samia",
-    text: text,
-    date: new Date().toISOString(),
-    read: false,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
+  let targets = getStudentTarget("filter-eleve-devoirs");
+
+  try {
+    var snap = await db.collection("devoirs").where("eleve", "in", targets).get();
+    var devoirs = snap.docs.map(d => Object.assign({id: d.id}, d.data()));
+    devoirs.sort((a,b) => (a.date||'') > (b.date||'') ? 1 : -1);
+    
+    var ecole = devoirs.filter(t => t.type === "ecole");
+    var samia = devoirs.filter(t => t.type === "samia");
+
+    function renderDevoirs(list, container, isSamia) {
+      if (list.length === 0) { container.innerHTML = `<div class="todo-empty">Rien pour l'instant 🙂</div>`; return; }
+      var checkClass = isSamia ? "devoir-checkbox devoir-checkbox-samia" : "devoir-checkbox";
+      
+      container.innerHTML = list.map(t => `
+        <div class="devoir-item">
+          <div class="${checkClass} ${t.done ? "checked" : ""}" onclick="toggleDevoir('${t.id}', ${t.done})">${t.done ? "✓" : ""}</div>
+          <div class="devoir-text ${t.done ? "done" : ""}">
+            ${t.theme ? `<div class="devoir-theme">${t.theme}</div>` : ""}
+            ${t.texte}
+            ${USERS[currentUser].isTeacher ? `<div style="font-size:10px; color:#888; margin-top:4px">Pour: ${t.eleve}</div>` : ""}
+          </div>
+          <button class="todo-del" onclick="deleteDevoir('${t.id}')">✕</button>
+        </div>`).join("");
+    }
+    renderDevoirs(ecole, cEcole, false);
+    renderDevoirs(samia, cSamia, true);
+  } catch(e) { console.error(e); cEcole.innerHTML = "Erreur"; cSamia.innerHTML = "Erreur"; }
+}
+window.loadDevoirs = loadDevoirs;
+
+
+// ===== DOCUMENTS =====
+function openDocModal() {
+  document.getElementById("docs-titre").value = "";
+  document.getElementById("docs-chapitre").value = "";
+  document.getElementById("docs-url").value = "";
+  document.getElementById("docs-file").value = "";
+  document.getElementById("docs-file").dataset.base64 = "";
+  document.getElementById("docs-file").dataset.type = "";
+  document.getElementById("docs-preview").innerHTML = "";
+  document.getElementById("docs-modal").classList.add("open");
+}
+window.openDocModal = openDocModal;
+function closeDocModal() { document.getElementById("docs-modal").classList.remove("open"); }
+window.closeDocModal = closeDocModal;
+
+async function saveDoc() {
+  const titre = document.getElementById("docs-titre").value.trim();
+  const chapitre = document.getElementById("docs-chapitre").value.trim();
+  if (!titre || !chapitre) { alert("Titre et Chapitre requis !"); return; }
   
-  input.value = "";
-}
-window.sendSamiaChatMessage = sendSamiaChatMessage;
+  let targetEleve = currentUser;
+  if (USERS[currentUser].isTeacher) targetEleve = document.getElementById("docs-eleve").value;
 
-
-// ===== EXERCICES =====
-function openExoModal(id = null) {
-  editExoId = id;
-  document.getElementById("exo-modal-title").textContent = id ? "Modifier l'exercice" : "Ajouter un exercice";
-  if (!id) {
-    document.getElementById("exo-titre").value = "";
-    document.getElementById("exo-theme").value = "";
-    document.getElementById("exo-source").value = "livre";
-    document.getElementById("exo-type").value = "seule";
-    document.getElementById("exo-statut").value = "bien_reussi";
-    document.getElementById("exo-note").value = "";
-    document.getElementById("exo-partage").checked = false;
-    document.getElementById("exo-photo").value = "";
-    document.getElementById("exo-photo").dataset.base64 = "";
-    document.getElementById("exo-photo-preview").innerHTML = "";
-  }
-  document.getElementById("exo-modal").classList.add("open");
-}
-window.openExoModal = openExoModal;
-
-function closeExoModal() {
-  document.getElementById("exo-modal").classList.remove("open");
-  editExoId = null;
-}
-window.closeExoModal = closeExoModal;
-
-async function saveExo() {
-  const titre = document.getElementById("exo-titre").value.trim();
-  if (!titre) { alert("Titre requis !"); return; }
-  const btn = document.getElementById("exo-save-btn");
+  const btn = document.getElementById("docs-save-btn");
   btn.textContent = "⏳ Enregistrement..."; btn.disabled = true;
 
   const data = {
-    eleve: currentUser,
-    titre,
-    theme: document.getElementById("exo-theme").value.trim(),
-    source: document.getElementById("exo-source").value,
-    type: document.getElementById("exo-type").value,
-    statut: document.getElementById("exo-statut").value,
-    note: document.getElementById("exo-note").value.trim(),
-    partageProf: document.getElementById("exo-partage").checked,
+    titre, chapitre,
+    eleve: targetEleve,
+    sender: currentUser,
     date: new Date().toISOString(),
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
   };
-  const photo = getPhotoBase64("exo-photo");
-  if (photo) data.photoBase64 = photo;
+  
+  const url = document.getElementById("docs-url").value.trim();
+  if (url) data.url = url;
+  
+  const fileInput = document.getElementById("docs-file");
+  if (fileInput.dataset.base64) {
+    data.fileBase64 = fileInput.dataset.base64;
+    data.fileType = fileInput.dataset.type; // "pdf" or "img"
+  }
 
   try {
-    if (editExoId) {
-      await db.collection("exercices").doc(editExoId).update(data);
-    } else {
-      data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-      await db.collection("exercices").add(data);
-    }
-    closeExoModal();
-    loadExos();
+    await db.collection("documents").add(data);
+    closeDocModal();
+    loadDocs();
   } catch(e) { alert("Erreur : " + e.message); }
-  btn.textContent = "Enregistrer"; btn.disabled = false;
+  btn.textContent = "Enregistrer 📂"; btn.disabled = false;
 }
-window.saveExo = saveExo;
+window.saveDoc = saveDoc;
 
-async function deleteExo(id) {
-  if (!confirm("Supprimer ?")) return;
-  await db.collection("exercices").doc(id).delete();
-  loadExos();
+async function deleteDoc(id) {
+  if (!confirm("Supprimer ce document ?")) return;
+  await db.collection("documents").doc(id).delete();
+  loadDocs();
 }
-window.deleteExo = deleteExo;
+window.deleteDoc = deleteDoc;
 
-function openEditExo(id, data) {
-  openExoModal(id);
-  setTimeout(() => {
-    document.getElementById("exo-titre").value = data.titre || "";
-    document.getElementById("exo-theme").value = data.theme || "";
-    document.getElementById("exo-source").value = data.source || "livre";
-    document.getElementById("exo-type").value = data.type || "seule";
-    document.getElementById("exo-statut").value = data.statut || "bien_reussi";
-    document.getElementById("exo-note").value = data.note || "";
-    document.getElementById("exo-partage").checked = data.partageProf || false;
-    if (data.photoBase64) {
-      document.getElementById("exo-photo-preview").innerHTML = `<img src="${data.photoBase64}">`;
-      document.getElementById("exo-photo").dataset.base64 = data.photoBase64;
+function openDocumentLink(id, base64Str, type, url) {
+  if (url) { window.open(url, '_blank'); return; }
+  if (base64Str) {
+    if (type === "pdf") {
+      // Create a temporary link to open the Base64 PDF
+      let pdfWindow = window.open("");
+      pdfWindow.document.write(`<iframe width='100%' height='100%' src='${base64Str}'></iframe>`);
+    } else {
+      let imgWindow = window.open("");
+      imgWindow.document.write(`<img style="max-width:100%" src="${base64Str}">`);
     }
-  }, 50);
+  }
 }
-window.openEditExo = openEditExo;
+window.openDocumentLink = openDocumentLink;
+
+async function loadDocs() {
+  const c = document.getElementById("docs-list");
+  c.innerHTML = `<div class="loading">Chargement...</div>`;
+  let targets = getStudentTarget("filter-eleve-docs");
+
+  try {
+    const snap = await db.collection("documents").where("eleve", "in", targets).get();
+    let docs = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    
+    if (docs.length === 0) { c.innerHTML = `<div class="empty-state"><span class="emoji">📂</span>Aucun document.</div>`; return; }
+
+    // Group by chapter
+    let grouped = {};
+    docs.forEach(d => {
+      let chap = d.chapitre || "Général";
+      if (!grouped[chap]) grouped[chap] = [];
+      grouped[chap].push(d);
+    });
+
+    let html = "";
+    for (const [chap, list] of Object.entries(grouped)) {
+      html += `<div class="doc-chapter-group">
+                 <div class="doc-chapter-title">${chap}</div>`;
+      list.forEach(d => {
+        const icon = d.fileType === "pdf" ? "📕" : (d.url ? "🔗" : "🖼️");
+        const dataStr = d.fileBase64 || "";
+        const urlStr = d.url || "";
+        html += `
+          <div class="doc-card">
+            <div class="doc-info" onclick="openDocumentLink('${d.id}', '${dataStr}', '${d.fileType}', '${urlStr}')">
+              <div class="doc-icon">${icon}</div>
+              <div class="doc-details">
+                <div class="doc-title">${d.titre}</div>
+                <div class="doc-meta">De: ${d.sender} ${USERS[currentUser].isTeacher ? `| Pour: ${d.eleve}` : ""}</div>
+              </div>
+            </div>
+            <button class="btn-sm btn-del" onclick="deleteDoc('${d.id}')" style="margin-left:8px">🗑️</button>
+          </div>`;
+      });
+      html += `</div>`;
+    }
+    c.innerHTML = html;
+  } catch(e) { c.innerHTML = `<div class="error-msg">Erreur : ${e.message}</div>`; }
+}
+window.loadDocs = loadDocs;
+
+// ===== NOTIFS, EXOS ET OVERVIEW (Restent globalement identiques avec correction filtres Samia) =====
 
 async function loadExos() {
   const container = document.getElementById("exo-list");
   container.innerHTML = `<div class="loading">Chargement...</div>`;
+  let targets = getStudentTarget("filter-eleve-exos");
+
   try {
-    const snap = await db.collection("exercices")
-      .where("eleve", "==", currentUser).get();
+    const snap = await db.collection("exercices").where("eleve", "in", targets).get();
     let docs = snap.docs.map(d => ({id: d.id, ...d.data()}));
-    docs.sort(function(a,b){ return (b.date||"") > (a.date||"") ? 1 : -1; });
+    docs.sort((a,b) => (b.date||"") > (a.date||"") ? 1 : -1);
+    
     const th = document.getElementById("filter-theme")?.value || "";
     const st = document.getElementById("filter-statut")?.value || "";
     if (th) docs = docs.filter(d => d.theme?.toLowerCase().includes(th.toLowerCase()) || d.titre?.toLowerCase().includes(th.toLowerCase()));
     if (st) docs = docs.filter(d => d.statut === st);
 
-    if (docs.length === 0) {
-      container.innerHTML = `<div class="empty-state"><span class="emoji">📚</span>Aucun exercice encore.<br>Ajoutes-en un !</div>`;
-      return;
-    }
+    if (docs.length === 0) { container.innerHTML = `<div class="empty-state">Aucun exercice.</div>`; return; }
+    
     container.innerHTML = docs.map(d => {
       const s = STATUTS[d.statut] || {label: d.statut, cls: ""};
-      const date = d.date ? new Date(d.date).toLocaleDateString("fr-FR") : "";
       const dataStr = JSON.stringify(d).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/`/g,"\\`");
-      
       return `
       <div class="card">
         <div class="exo-titulo">${d.titre ? `<div class="exo-titre">${d.titre}</div>` : ""}</div>
         <div class="exo-meta">
+          ${USERS[currentUser].isTeacher ? `<span class="tag" style="background:#FFE082;color:#d87b00">👤 ${d.eleve}</span>` : ""}
           ${d.theme ? `<span class="tag tag-theme">${d.theme}</span>` : ""}
-          <span class="tag">${{livre:"📖 Livre",internet:"🌐 Web",prof:"👩‍🏫 Samia",autre:"📝 Autre"}[d.source]||d.source}</span>
-          <span class="tag">${d.type==="ensemble"?"Avec Samia":"Seule"}</span>
-          ${d.partageProf ? `<span class="tag tag-share">📤 Partagé</span>` : ""}
         </div>
         <span class="statut-badge ${s.cls}">${s.label}</span>
         ${d.note ? `<div class="exo-note">${d.note}</div>` : ""}
         ${d.photoBase64 ? `<img class="exo-photo" src="${d.photoBase64}">` : ""}
         <div class="exo-footer">
-          <span class="exo-date">${date}</span>
+          <span class="exo-date">${d.date ? new Date(d.date).toLocaleDateString("fr-FR") : ""}</span>
           <div class="exo-actions">
             <button class="btn-sm btn-edit" onclick='openEditExo("${d.id}", ${dataStr})'>✏️</button>
             <button class="btn-sm btn-del" onclick="deleteExo('${d.id}')">🗑️</button>
@@ -1163,283 +911,151 @@ async function loadExos() {
         </div>
       </div>`;
     }).join("");
-  } catch(e) {
-    container.innerHTML = `<div class="error-msg">⚠️ Erreur : ${e.message}</div>`;
-  }
+  } catch(e) { container.innerHTML = `<div class="error-msg">⚠️ Erreur : ${e.message}</div>`; }
 }
 window.loadExos = loadExos;
 
-
-// ===== FICHES INTERACTIVES =====
-function openFicheModal() {
-  document.getElementById("fiche-titre").value = "";
-  document.getElementById("fiche-theme").value = "";
-  document.getElementById("fiche-url").value = ""; // Nouveau champ URL
-  document.getElementById("fiche-contenu").value = "";
-  document.getElementById("fiche-img").value = "";
-  document.getElementById("fiche-img").dataset.base64 = "";
-  document.getElementById("fiche-img-preview").innerHTML = "";
-  document.querySelectorAll(".fiche-dest").forEach(c => c.checked = false);
-  document.getElementById("fiche-modal").classList.add("open");
+// Intégration des fonctions de chat (idem)
+function initNotifications(isTeacher) {
+  notifUnsubscribe = db.collection("messages").where("read", "==", false).onSnapshot(snap => {
+    let unreadCount = 0; let hasNewMessage = false;
+    snap.forEach(doc => {
+      let m = doc.data();
+      if (isTeacher && m.sender !== "Samia") { unreadCount++; hasNewMessage = true; }
+      if (!isTeacher && m.eleve === currentUser && m.sender === "Samia") { unreadCount++; hasNewMessage = true; }
+    });
+    if (initialLoadDone && hasNewMessage && unreadCount > 0) notifSound.play().catch(()=>{});
+    initialLoadDone = true;
+    const badgeId = isTeacher ? "badge-overview" : "badge-chat";
+    const badgeEl = document.getElementById(badgeId);
+    if (unreadCount > 0) { badgeEl.textContent = unreadCount; badgeEl.style.display = "block"; } 
+    else { badgeEl.style.display = "none"; }
+    if (isTeacher && document.getElementById("page-overview").classList.contains("active")) loadOverview();
+  });
 }
-window.openFicheModal = openFicheModal;
+// Chat (élève)
+function initStudentChat() {
+  if (chatUnsubscribe) chatUnsubscribe();
+  document.getElementById("student-chat-box").innerHTML = `<div class="loading">Chargement...</div>`;
+  markChatAsRead(currentUser, false);
+  chatUnsubscribe = db.collection("messages").where("eleve", "==", currentUser).onSnapshot(snap => {
+    let msgs = snap.docs.map(d => d.data());
+    msgs.sort((a,b) => (a.date || "") > (b.date || "") ? 1 : -1);
+    renderChat(msgs, "student-chat-box");
+    markChatAsRead(currentUser, false);
+  });
+}
+function sendChatMessage() {
+  const input = document.getElementById("student-chat-input");
+  const text = input.value.trim(); if (!text) return;
+  db.collection("messages").add({ eleve: currentUser, sender: currentUser, text: text, date: new Date().toISOString(), read: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+  input.value = "";
+}
+window.sendChatMessage = sendChatMessage;
 
-function closeFicheModal() { document.getElementById("fiche-modal").classList.remove("open"); }
-window.closeFicheModal = closeFicheModal;
+// Chat (Samia)
+function openSamiaChat(eleveName) {
+  currentChatStudent = eleveName;
+  document.getElementById("samia-chat-title").textContent = `Chat avec ${eleveName}`;
+  document.getElementById("samia-chat-modal").classList.add("open");
+  if (chatUnsubscribe) chatUnsubscribe();
+  markChatAsRead(eleveName, true);
+  chatUnsubscribe = db.collection("messages").where("eleve", "==", eleveName).onSnapshot(snap => {
+    let msgs = snap.docs.map(d => d.data());
+    msgs.sort((a,b) => (a.date || "") > (b.date || "") ? 1 : -1);
+    renderChat(msgs, "samia-chat-box");
+    markChatAsRead(eleveName, true); 
+  });
+}
+window.openSamiaChat = openSamiaChat;
+function closeSamiaChat() { document.getElementById("samia-chat-modal").classList.remove("open"); if (chatUnsubscribe) { chatUnsubscribe(); chatUnsubscribe = null; } currentChatStudent = null; }
+window.closeSamiaChat = closeSamiaChat;
+function sendSamiaChatMessage() {
+  const input = document.getElementById("samia-chat-input");
+  const text = input.value.trim(); if (!text || !currentChatStudent) return;
+  db.collection("messages").add({ eleve: currentChatStudent, sender: "Samia", text: text, date: new Date().toISOString(), read: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+  input.value = "";
+}
+window.sendSamiaChatMessage = sendSamiaChatMessage;
+async function markChatAsRead(eleveName, isTeacher) {
+  const snap = await db.collection("messages").where("eleve", "==", eleveName).where("read", "==", false).get();
+  snap.docs.forEach(doc => { let m = doc.data(); if ((isTeacher && m.sender !== "Samia") || (!isTeacher && m.sender === "Samia")) db.collection("messages").doc(doc.id).update({ read: true }); });
+}
+function renderChat(msgs, containerId) {
+  const box = document.getElementById(containerId);
+  if (msgs.length === 0) { box.innerHTML = `<div class="empty-state">Aucun message.</div>`; return; }
+  box.innerHTML = msgs.map(m => {
+    const isMe = m.sender === currentUser; const timeStr = m.date ? new Date(m.date).toLocaleTimeString("fr-FR", {hour: '2-digit', minute:'2-digit'}) : "";
+    return `<div class="chat-msg ${isMe ? 'me' : 'other'}">
+      ${m.photoBase64 ? `<img src="${m.photoBase64}" class="chat-img" onclick="window.open(this.src)">` : ""}
+      ${m.text ? `<div>${m.text}</div>` : ""}
+      <div class="chat-time">${timeStr}</div></div>`;
+  }).join("");
+  setTimeout(() => { box.scrollTop = box.scrollHeight; }, 100);
+}
 
-async function saveFiche() {
-  const titre = document.getElementById("fiche-titre").value.trim();
-  if (!titre) { alert("Titre requis !"); return; }
-  const dests = [...document.querySelectorAll(".fiche-dest:checked")].map(c => c.value);
-  if (dests.length === 0) { alert("Sélectionne au moins une élève."); return; }
-  
-  const btn = document.getElementById("fiche-save-btn");
-  btn.textContent = "⏳ Publication..."; btn.disabled = true;
-  
-  const data = {
-    titre,
-    theme: document.getElementById("fiche-theme").value.trim(),
-    contenu: document.getElementById("fiche-contenu").value.trim(),
-    destinataires: dests,
-    date: new Date().toISOString(),
-    auteur: "Samia",
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  };
-  
-  // Ajouter l'URL si elle est renseignée
-  const url = document.getElementById("fiche-url").value.trim();
-  if (url) data.url = url;
+function sendChatPhoto(inputElement, isSamia) {
+  const file = inputElement.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image(); img.onload = () => {
+      const canvas = document.createElement("canvas"); let w = img.width, h = img.height;
+      if (w > 800) { h = h * 800 / w; w = 800; } if (h > 800) { w = w * 800 / h; h = 800; }
+      canvas.width = w; canvas.height = h; canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+      db.collection("messages").add({ eleve: isSamia ? currentChatStudent : currentUser, sender: isSamia ? "Samia" : currentUser, text: "", photoBase64: canvas.toDataURL("image/jpeg", 0.7), date: new Date().toISOString(), read: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+      inputElement.value = ""; 
+    }; img.src = e.target.result;
+  }; reader.readAsDataURL(file);
+}
+window.sendChatPhoto = sendChatPhoto;
 
-  const photo = getPhotoBase64("fiche-img");
-  if (photo) data.photoBase64 = photo;
-  
+async function loadOverview() {
+  const c = document.getElementById("overview-list"); c.innerHTML = `<div class="loading">Chargement...</div>`;
   try {
-    await db.collection("fiches").add(data);
-    closeFicheModal();
-    loadFiches();
-  } catch(e) { alert("Erreur : " + e.message); }
-  btn.textContent = "Publier 📤"; btn.disabled = false;
+    const [exoSnap, msgSnap] = await Promise.all([ db.collection("exercices").where("partageProf","==",true).get(), db.collection("messages").where("read", "==", false).get() ]);
+    const exos = exoSnap.docs.map(d => ({id:d.id,...d.data()}));
+    const unreadMap = {}; msgSnap.docs.forEach(d => { let m = d.data(); if (m.sender !== "Samia") unreadMap[m.eleve] = (unreadMap[m.eleve] || 0) + 1; });
+    const eleves = Object.keys(USERS).filter(u => !USERS[u].isTeacher);
+    c.innerHTML = eleves.map(eleve => {
+      const eExos = exos.filter(e => e.eleve === eleve); const color = USERS[eleve].color; const unreadCount = unreadMap[eleve] || 0;
+      return `<div class="card" style="border-left: 4px solid ${color}">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="width:46px;height:46px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:white;flex-shrink:0">${eleve[0]}</div>
+          <div style="flex:1"><div class="overview-eleve">${eleve}</div>
+            <div class="stats-row">
+              <span class="stat-chip s-ok">${eExos.filter(e=>e.statut==="bien_reussi").length} ✅</span>
+              <span class="stat-chip s-bad">${eExos.filter(e=>e.statut==="rien_compris").length} ❌</span>
+            </div>
+          </div>
+          ${unreadCount > 0 ? `<span class="notif-pill">${unreadCount} message(s)</span>` : ""}
+        </div>
+        <button class="btn-reply" onclick="openSamiaChat('${eleve}')"><i class="fa fa-comment-dots"></i> Ouvrir le Chat</button>
+      </div>`;
+    }).join("");
+  } catch(e) { c.innerHTML = `<div class="error-msg">Erreur : ${e.message}</div>`; }
 }
-window.saveFiche = saveFiche;
 
-async function deleteFiche(id) {
-  if (!confirm("Supprimer cette fiche ?")) return;
-  await db.collection("fiches").doc(id).delete();
-  loadFiches();
-}
-window.deleteFiche = deleteFiche;
-
+// Fiches
 async function loadFiches() {
   const c = document.getElementById("fiche-list");
-  c.innerHTML = `<div class="loading">Chargement...</div>`;
-  const isTeacher = USERS[currentUser]?.isTeacher;
   try {
     const snap = await db.collection("fiches").get();
-    const fiches = snap.docs.map(d => ({id:d.id,...d.data()})).filter(f => {
-      if (isTeacher) return true;
-      return f.destinataires?.includes(currentUser) || f.destinataires?.includes("Toutes");
-    });
-    
-    if (fiches.length === 0) { c.innerHTML = `<div class="empty-state"><span class="emoji">📄</span>Aucune fiche pour l'instant.</div>`; return; }
-    
-    c.innerHTML = fiches.map(f => {
-      const date = f.date ? new Date(f.date).toLocaleDateString("fr-FR") : "";
-      return `
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div>
-            <div class="fiche-titre">${f.titre}</div>
-            <div class="exo-meta">
-              ${f.theme ? `<span class="tag tag-theme">${f.theme}</span>` : ""}
-              <span class="tag">Pour : ${f.destinataires?.join(", ")}</span>
-            </div>
-            <div class="exo-date">${date}</div>
-          </div>
-          ${isTeacher ? `<button class="btn-sm btn-del" onclick="deleteFiche('${f.id}')">🗑️</button>` : ""}
-        </div>
+    const fiches = snap.docs.map(d => ({id:d.id,...d.data()})).filter(f => USERS[currentUser]?.isTeacher || f.destinataires?.includes(currentUser) || f.destinataires?.includes("Toutes"));
+    if (fiches.length === 0) { c.innerHTML = `<div class="empty-state">Aucune fiche.</div>`; return; }
+    c.innerHTML = fiches.map(f => `<div class="card">
+        <div style="display:flex;justify-content:space-between;"><div><div class="fiche-titre">${f.titre}</div><div class="exo-meta">${f.theme ? `<span class="tag tag-theme">${f.theme}</span>` : ""}</div></div>
+        ${USERS[currentUser]?.isTeacher ? `<button class="btn-sm btn-del" onclick="deleteFiche('${f.id}')">🗑️</button>` : ""}</div>
         ${f.contenu ? `<div class="fiche-contenu">${f.contenu}</div>` : ""}
         ${f.photoBase64 ? `<img class="exo-photo" src="${f.photoBase64}">` : ""}
         ${f.url ? `<iframe class="fiche-iframe" src="${f.url}"></iframe>` : ""}
-      </div>`;
-    }).join("");
+      </div>`).join("");
   } catch(e) { c.innerHTML = `<div class="error-msg">Erreur : ${e.message}</div>`; }
 }
 
-// ===== OVERVIEW =====
-async function loadOverview() {
-  const c = document.getElementById("overview-list");
-  c.innerHTML = `<div class="loading">Chargement des élèves...</div>`;
-  try {
-    const [exoSnap, msgSnap] = await Promise.all([
-      db.collection("exercices").where("partageProf","==",true).get(),
-      db.collection("messages").where("read", "==", false).get()
-    ]);
-    
-    const exos = exoSnap.docs.map(d => ({id:d.id,...d.data()}));
-    
-    const unreadMap = {};
-    msgSnap.docs.forEach(d => {
-      let m = d.data();
-      if (m.sender !== "Samia") {
-        unreadMap[m.eleve] = (unreadMap[m.eleve] || 0) + 1;
-      }
-    });
-
-    const eleves = Object.keys(USERS).filter(u => !USERS[u].isTeacher);
-
-    c.innerHTML = eleves.map(eleve => {
-      const eExos = exos.filter(e => e.eleve === eleve);
-      const color = USERS[eleve].color;
-      const unreadCount = unreadMap[eleve] || 0;
-      const stats = {
-        ok: eExos.filter(e=>e.statut==="bien_reussi").length,
-        mid: eExos.filter(e=>e.statut==="compris_revoir").length,
-        warn: eExos.filter(e=>e.statut==="a_revoir").length,
-        bad: eExos.filter(e=>e.statut==="rien_compris").length
-      };
-      
-      return `
-      <div class="card" style="border-left: 4px solid ${color}">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-          <div style="width:46px;height:46px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:white;flex-shrink:0">${eleve[0]}</div>
-          <div style="flex:1">
-            <div class="overview-eleve">${eleve}</div>
-            <div class="stats-row">
-              <span class="stat-chip s-ok">${stats.ok} ✅</span>
-              <span class="stat-chip s-mid">${stats.mid} 🔄</span>
-              <span class="stat-chip s-warn">${stats.warn} ⚠️</span>
-              <span class="stat-chip s-bad">${stats.bad} ❌</span>
-            </div>
-          </div>
-          ${unreadCount > 0 ? `<span class="notif-pill">${unreadCount} message(s) non lu(s)</span>` : ""}
-        </div>
-        ${eExos.length === 0 ? `<div style="font-size:13px;color:var(--muted);padding:4px 0">Aucun exercice partagé</div>` : `
-          ${eExos.slice(0,4).map(e => {
-            const s = STATUTS[e.statut] || {label:e.statut, cls:""};
-            const date = e.date ? new Date(e.date).toLocaleDateString("fr-FR") : "";
-            return `<div class="exo-compact">
-              <div><strong>${e.titre}</strong> ${e.theme ? `<span class="tag tag-theme" style="margin-left:4px">${e.theme}</span>` : ""}</div>
-              <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
-                <span class="statut-badge ${s.cls}" style="font-size:10px">${s.label}</span>
-                <span class="exo-date">${date}</span>
-              </div>
-            </div>`;
-          }).join("")}
-        `}
-        <button class="btn-reply" onclick="openSamiaChat('${eleve}')">
-          <i class="fa fa-comment-dots"></i> Ouvrir le Chat
-        </button>
-      </div>`;
-    }).join("");
-  } catch(e) { c.innerHTML = `<div class="error-msg">Erreur : ${e.message}</div>`; }
-}
-
-
-// Close modals on overlay click
+// Global modal overlay close
 document.querySelectorAll(".modal-overlay").forEach(overlay => {
-  overlay.addEventListener("click", e => {
-    if (e.target === overlay) {
-      overlay.classList.remove("open");
-      if (overlay.id === "samia-chat-modal") closeSamiaChat();
-    }
-  });
+  overlay.addEventListener("click", e => { if (e.target === overlay) { overlay.classList.remove("open"); if (overlay.id === "samia-chat-modal") closeSamiaChat(); } });
 });
-
-// ===== TODO =====
-function openTodoModal() {
-  document.getElementById("todo-texte").value = "";
-  document.getElementById("todo-theme").value = "";
-  document.getElementById("todo-type").value = "seule";
-  document.getElementById("todo-modal").classList.add("open");
-}
-window.openTodoModal = openTodoModal;
-
-function closeTodoModal() { document.getElementById("todo-modal").classList.remove("open"); }
-window.closeTodoModal = closeTodoModal;
-
-async function saveTodo() {
-  var texte = document.getElementById("todo-texte").value.trim();
-  if (!texte) { alert("Écris la tâche !"); return; }
-  var btn = document.getElementById("todo-save-btn");
-  btn.textContent = "⏳ Ajout..."; btn.disabled = true;
-  try {
-    await db.collection("todos").add({
-      eleve: currentUser,
-      texte: texte,
-      theme: document.getElementById("todo-theme").value.trim(),
-      type: document.getElementById("todo-type").value,
-      done: false,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    closeTodoModal();
-    loadTodo();
-  } catch(e) { alert("Erreur : " + e.message); }
-  btn.textContent = "Ajouter ✅"; btn.disabled = false;
-}
-window.saveTodo = saveTodo;
-
-async function toggleTodo(id, done) {
-  await db.collection("todos").doc(id).update({ done: !done });
-  loadTodo();
-}
-window.toggleTodo = toggleTodo;
-
-async function deleteTodo(id) {
-  await db.collection("todos").doc(id).delete();
-  loadTodo();
-}
-window.deleteTodo = deleteTodo;
-
-async function loadTodo() {
-  var cSeule = document.getElementById("todo-seule");
-  var cSamia = document.getElementById("todo-samia");
-  cSeule.innerHTML = `<div class="loading" style="padding:16px;font-size:13px">Chargement...</div>`;
-  cSamia.innerHTML = `<div class="loading" style="padding:16px;font-size:13px">Chargement...</div>`;
-  
-  try {
-    var snap = await db.collection("todos")
-      .where("eleve", "==", currentUser).get();
-      
-    var todos = snap.docs.map(function(d) { return Object.assign({id: d.id}, d.data()); });
-    todos.sort(function(a,b){ return (a.date||'') > (b.date||'') ? 1 : -1; });
-    
-    var seule = todos.filter(function(t) { return t.type === "seule"; });
-    var avecSamia = todos.filter(function(t) { return t.type === "samia"; });
-
-    function renderTodos(list, container, isSamia) {
-      if (list.length === 0) {
-        container.innerHTML = `<div class="todo-empty">Rien pour l'instant 🙂</div>`;
-        return;
-      }
-      
-      var checkClass = isSamia ? "todo-checkbox todo-checkbox-samia" : "todo-checkbox";
-      
-      container.innerHTML = list.map(function(t) {
-        return `
-          <div class="todo-item">
-            <div class="${checkClass} ${t.done ? "checked" : ""}" onclick="toggleTodo('${t.id}', ${t.done})">
-              ${t.done ? "✓" : ""}
-            </div>
-            <div class="todo-text ${t.done ? "done" : ""}">
-              ${t.theme ? `<div class="todo-theme">${t.theme}</div>` : ""}
-              ${t.texte}
-            </div>
-            <button class="todo-del" onclick="deleteTodo('${t.id}')" title="Supprimer">✕</button>
-          </div>`;
-      }).join("");
-    }
-
-    renderTodos(seule, cSeule, false);
-    renderTodos(avecSamia, cSamia, true);
-  } catch(e) {
-    cSeule.innerHTML = `<div style="font-size:12px;color:var(--bad);padding:8px">Erreur : ${e.message}</div>`;
-    cSamia.innerHTML = `<div style="font-size:12px;color:var(--bad);padding:8px">Erreur : ${e.message}</div>`;
-  }
-}
-window.loadTodo = loadTodo;
-
-// Init
-buildUserGrid();
 
 });
 </script>
