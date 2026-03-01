@@ -130,7 +130,7 @@
     padding: 6px 10px; border-radius: 8px;
   }
 
-  /* ===== NAV BAR ===== */
+  /* ===== NAV BAR & BADGES ===== */
   .nav-bar {
     position: fixed;
     bottom: calc(16px + env(safe-area-inset-bottom));
@@ -149,12 +149,20 @@
     background: none; border: none; cursor: pointer;
     color: var(--muted); font-family: inherit;
     padding: 8px 16px; border-radius: 16px;
-    transition: all 0.2s; flex: 1;
+    transition: all 0.2s; flex: 1; position: relative;
   }
   .nav-btn i { font-size: 20px; }
   .nav-btn span { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
   .nav-btn.active { color: var(--primary); }
   .nav-btn.active i { transform: scale(1.1); }
+  
+  .badge {
+    position: absolute; top: 4px; right: 20px;
+    background: #E74C3C; color: white;
+    font-size: 10px; font-weight: 800;
+    padding: 2px 6px; border-radius: 99px;
+    border: 2px solid white; display: none;
+  }
 
   /* ===== SECTION HEADER ===== */
   .section-header {
@@ -217,11 +225,15 @@
   .chat-msg.me { align-self: flex-end; background: var(--primary); color: white; border-bottom-right-radius: 4px; }
   .chat-msg.other { align-self: flex-start; background: #f0f2f5; color: var(--text); border-bottom-left-radius: 4px; }
   .chat-time { font-size: 10px; opacity: 0.7; margin-top: 4px; text-align: right; }
-  .chat-input-area { display: flex; gap: 8px; padding: 12px; background: white; border-top: 1px solid var(--border); }
-  .chat-input-area input { flex: 1; padding: 12px 16px; border-radius: 99px; border: 1px solid var(--border); font-family: inherit; font-size: 14px; background: var(--bg); outline: none; }
-  .chat-input-area input:focus { border-color: var(--primary); background: white; }
-  .chat-input-area button { background: var(--primary); color: white; border: none; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.2s; }
-  .chat-input-area button:active { transform: scale(0.9); }
+  .chat-img { width: 100%; max-width: 250px; border-radius: 8px; margin-top: 4px; cursor: pointer; }
+  
+  .chat-input-area { display: flex; gap: 8px; padding: 12px; background: white; border-top: 1px solid var(--border); align-items: center; }
+  .chat-input-area input[type="text"] { flex: 1; padding: 12px 16px; border-radius: 99px; border: 1px solid var(--border); font-family: inherit; font-size: 14px; background: var(--bg); outline: none; }
+  .chat-input-area input[type="text"]:focus { border-color: var(--primary); background: white; }
+  
+  .chat-photo-btn { color: var(--primary); font-size: 20px; cursor: pointer; padding: 8px; }
+  .chat-send-btn { background: var(--primary); color: white; border: none; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.2s; flex-shrink: 0; }
+  .chat-send-btn:active { transform: scale(0.9); }
 
   /* ===== FICHES ===== */
   .fiche-titre { font-size: 17px; font-weight: 800; margin-bottom: 8px; }
@@ -232,7 +244,8 @@
   .stats-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
   .stat-chip { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 99px; }
   .exo-compact { padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; }
-  
+  .notif-pill { background: var(--bad-bg); color: var(--bad); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 99px; }
+
   /* ===== FILTERS ===== */
   .filters { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
   .filters::-webkit-scrollbar { display: none; }
@@ -262,7 +275,7 @@
   .btn-sm:active { transform: scale(0.95); }
   .btn-edit { background: var(--primary-light); color: var(--primary); }
   .btn-del { background: var(--bad-bg); color: var(--bad); }
-  .btn-reply { background: var(--ok-bg); color: var(--ok); width: 100%; text-align: center; padding: 10px; margin-top: 10px; display: flex; justify-content: center; gap: 8px; font-size: 14px;}
+  .btn-reply { background: var(--ok-bg); color: var(--ok); width: 100%; text-align: center; padding: 10px; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; border-radius: 12px; border: none;}
 
   /* ===== MODAL ===== */
   .modal-overlay {
@@ -319,68 +332,19 @@
   .error-msg { text-align: center; padding: 20px; color: var(--bad); font-size: 14px; background: var(--bad-bg); border-radius: 12px; }
 
   /* ===== TODO ===== */
-  .todo-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .todo-col {
-    background: white;
-    border-radius: 18px;
-    padding: 14px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-    border: 1px solid var(--border);
-    min-height: 200px;
-  }
-  .todo-col-header {
-    font-size: 12px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--primary);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+  .todo-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .todo-col { background: white; border-radius: 18px; padding: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); border: 1px solid var(--border); min-height: 200px; }
+  .todo-col-header { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
   .todo-col-header-samia { color: #B55A8A !important; }
-  .todo-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-    line-height: 1.4;
-  }
+  .todo-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; line-height: 1.4; }
   .todo-item:last-child { border-bottom: none; }
-  .todo-checkbox {
-    width: 20px; height: 20px;
-    border-radius: 6px;
-    border: 2px solid var(--border);
-    flex-shrink: 0;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px;
-    transition: all 0.2s;
-    margin-top: 1px;
-    background: white;
-  }
-  .todo-checkbox.checked {
-    background: var(--ok);
-    border-color: var(--ok);
-    color: white;
-  }
+  .todo-checkbox { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--border); flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.2s; margin-top: 1px; background: white; }
+  .todo-checkbox.checked { background: var(--ok); border-color: var(--ok); color: white; }
   .todo-checkbox-samia.checked { background: #B55A8A; border-color: #B55A8A; }
   .todo-text { flex: 1; }
   .todo-text.done { text-decoration: line-through; color: var(--muted); }
   .todo-theme { font-size: 10px; font-weight: 700; color: var(--primary); text-transform: uppercase; }
-  .todo-del {
-    background: none; border: none; color: var(--muted);
-    cursor: pointer; font-size: 13px; padding: 2px 4px;
-    border-radius: 6px; flex-shrink: 0;
-    transition: all 0.2s;
-  }
+  .todo-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 13px; padding: 2px 4px; border-radius: 6px; flex-shrink: 0; transition: all 0.2s; }
   .todo-del:active { color: var(--bad); background: var(--bad-bg); }
   .todo-empty { text-align: center; padding: 20px 10px; color: var(--muted); font-size: 12px; }
 
@@ -468,8 +432,12 @@
       <div class="chat-box" id="student-chat-box">
         </div>
       <div class="chat-input-area">
+        <label class="chat-photo-btn">
+          <i class="fa fa-camera"></i>
+          <input type="file" hidden accept="image/*" onchange="sendChatPhoto(this, false)">
+        </label>
         <input type="text" id="student-chat-input" placeholder="Écris un message à Samia..." onkeypress="if(event.key==='Enter') sendChatMessage()">
-        <button onclick="sendChatMessage()"><i class="fa fa-paper-plane"></i></button>
+        <button class="chat-send-btn" onclick="sendChatMessage()"><i class="fa fa-paper-plane"></i></button>
       </div>
     </div>
   </div>
@@ -512,6 +480,7 @@
     </button>
     <button class="nav-btn" id="nav-chat" onclick="showPage('chat')">
       <i class="fa fa-comments"></i><span>Messages</span>
+      <div class="badge" id="badge-chat">0</div>
     </button>
     <button class="nav-btn" id="nav-todo" onclick="showPage('todo')">
       <i class="fa fa-circle-check"></i><span>À faire</span>
@@ -521,6 +490,7 @@
     </button>
     <button class="nav-btn" id="nav-overview" onclick="showPage('overview')" style="display:none">
       <i class="fa fa-users"></i><span>Élèves</span>
+      <div class="badge" id="badge-overview">0</div>
     </button>
   </nav>
 </div>
@@ -533,8 +503,12 @@
       <div class="chat-box" id="samia-chat-box">
         </div>
       <div class="chat-input-area">
+        <label class="chat-photo-btn">
+          <i class="fa fa-camera"></i>
+          <input type="file" hidden accept="image/*" onchange="sendChatPhoto(this, true)">
+        </label>
         <input type="text" id="samia-chat-input" placeholder="Répondre..." onkeypress="if(event.key==='Enter') sendSamiaChatMessage()">
-        <button onclick="sendSamiaChatMessage()"><i class="fa fa-paper-plane"></i></button>
+        <button class="chat-send-btn" onclick="sendSamiaChatMessage()"><i class="fa fa-paper-plane"></i></button>
       </div>
     </div>
   </div>
@@ -710,7 +684,8 @@ var editExoId = null;
 
 // Chat variables
 var chatUnsubscribe = null;
-var currentChatStudent = null; // Used by Samia to know who she is chatting with
+var notifUnsubscribe = null; // Pour écouter les pastilles de notifications
+var currentChatStudent = null;
 
 // ===== LOGIN =====
 function buildUserGrid() {
@@ -778,17 +753,20 @@ function doLogin(name) {
   
   if (u.isTeacher) {
     document.getElementById("nav-overview").style.display = "flex";
-    document.getElementById("nav-chat").style.display = "none"; // Samia accesses chat via Overview
+    document.getElementById("nav-chat").style.display = "none";
     document.getElementById("btn-add-fiche").style.display = "flex";
   } else {
     document.getElementById("nav-overview").style.display = "none";
     document.getElementById("nav-chat").style.display = "flex";
   }
+  
+  initNotifications(u.isTeacher);
   showPage("exos");
 }
 
 function logout() {
   if (chatUnsubscribe) chatUnsubscribe();
+  if (notifUnsubscribe) notifUnsubscribe();
   currentUser = null; selectedUser = null; pinInput = "";
   document.getElementById("login-screen").style.display = "flex";
   document.getElementById("app").style.display = "none";
@@ -796,6 +774,8 @@ function logout() {
   document.getElementById("login-error").style.display = "none";
   document.getElementById("nav-overview").style.display = "none";
   document.getElementById("btn-add-fiche").style.display = "none";
+  document.getElementById("badge-chat").style.display = "none";
+  document.getElementById("badge-overview").style.display = "none";
   updateDots();
   document.querySelectorAll(".user-btn").forEach(b => b.classList.remove("selected"));
 }
@@ -803,14 +783,13 @@ window.logout = logout;
 
 // ===== PAGES =====
 function showPage(p) {
-  if (chatUnsubscribe && p !== 'chat') { chatUnsubscribe(); } // Stop listening to chat if leaving page
+  if (chatUnsubscribe && p !== 'chat') { chatUnsubscribe(); } 
   
   document.querySelectorAll(".page").forEach(x => x.classList.remove("active"));
   document.querySelectorAll(".nav-btn").forEach(x => x.classList.remove("active"));
   var pageMap = {exos:'exos', chat:'chat', fiches:'fiches', todo:'todo', overview:'overview'};
   document.getElementById("page-" + (pageMap[p] || p)).classList.add("active");
   
-  // Highlight the correct nav button (if it exists)
   var navBtn = document.getElementById("nav-" + p);
   if (navBtn) navBtn.classList.add("active");
   
@@ -851,7 +830,51 @@ function getPhotoBase64(inputId) {
   return document.getElementById(inputId).dataset.base64 || null;
 }
 
-// ===== MESSAGERIE (CHAT) =====
+// ===== MESSAGERIE (CHAT) ET NOTIFICATIONS =====
+
+function initNotifications(isTeacher) {
+  // Écoute tous les messages non lus pour l'utilisateur actuel
+  notifUnsubscribe = db.collection("messages").where("read", "==", false).onSnapshot(snap => {
+    let unreadCount = 0;
+    
+    snap.forEach(doc => {
+      let m = doc.data();
+      if (isTeacher && m.sender !== "Samia") unreadCount++;
+      if (!isTeacher && m.eleve === currentUser && m.sender === "Samia") unreadCount++;
+    });
+    
+    // Mettre à jour les badges de navigation
+    const badgeId = isTeacher ? "badge-overview" : "badge-chat";
+    const badgeEl = document.getElementById(badgeId);
+    if (unreadCount > 0) {
+      badgeEl.textContent = unreadCount;
+      badgeEl.style.display = "block";
+    } else {
+      badgeEl.style.display = "none";
+    }
+    
+    // Rafraîchir l'overview de Samia si elle est sur la page
+    if (isTeacher && document.getElementById("page-overview").classList.contains("active")) {
+      loadOverview();
+    }
+  });
+}
+
+async function markChatAsRead(eleveName, isTeacher) {
+  try {
+    const snap = await db.collection("messages")
+      .where("eleve", "==", eleveName)
+      .where("read", "==", false).get();
+      
+    snap.docs.forEach(doc => {
+      let m = doc.data();
+      // Si Samia ouvre, marquer comme lu les msg de l'élève. Sinon l'inverse.
+      if ((isTeacher && m.sender !== "Samia") || (!isTeacher && m.sender === "Samia")) {
+        db.collection("messages").doc(doc.id).update({ read: true });
+      }
+    });
+  } catch(e) { console.error("Erreur read", e); }
+}
 
 function renderChat(msgs, containerId) {
   const box = document.getElementById(containerId);
@@ -865,31 +888,66 @@ function renderChat(msgs, containerId) {
     const timeStr = m.date ? new Date(m.date).toLocaleTimeString("fr-FR", {hour: '2-digit', minute:'2-digit'}) : "";
     return `
       <div class="chat-msg ${isMe ? 'me' : 'other'}">
-        <div>${m.text}</div>
+        ${m.photoBase64 ? `<img src="${m.photoBase64}" class="chat-img" onclick="window.open(this.src)">` : ""}
+        ${m.text ? `<div>${m.text}</div>` : ""}
         <div class="chat-time">${timeStr}</div>
       </div>
     `;
   }).join("");
   
-  // Scroll to bottom
   setTimeout(() => { box.scrollTop = box.scrollHeight; }, 100);
 }
 
+// Fonction partagée pour envoyer une photo de chat
+function sendChatPhoto(inputElement, isSamia) {
+  const file = inputElement.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const MAX = 800; // Même compression que les exos
+      let w = img.width, h = img.height;
+      if (w > MAX) { h = h * MAX / w; w = MAX; }
+      if (h > MAX) { w = w * MAX / h; h = MAX; }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+      const compressed = canvas.toDataURL("image/jpeg", 0.7);
+      
+      // Envoyer le message photo
+      db.collection("messages").add({
+        eleve: isSamia ? currentChatStudent : currentUser,
+        sender: isSamia ? "Samia" : currentUser,
+        text: "", // Message vide avec juste la photo
+        photoBase64: compressed,
+        date: new Date().toISOString(),
+        read: false,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      inputElement.value = ""; // Reset l'input
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+window.sendChatPhoto = sendChatPhoto;
+
 // Pour l'élève
 function initStudentChat() {
-  if (chatUnsubscribe) chatUnsubscribe(); // Clean up previous listener
+  if (chatUnsubscribe) chatUnsubscribe();
   document.getElementById("student-chat-box").innerHTML = `<div class="loading">Chargement...</div>`;
   
-  // Listen to messages where the student is involved
+  // Marquer lu
+  markChatAsRead(currentUser, false);
+  
   chatUnsubscribe = db.collection("messages")
     .where("eleve", "==", currentUser)
     .onSnapshot(snap => {
       let msgs = snap.docs.map(d => d.data());
-      // Sort chronologically in JS
       msgs.sort((a,b) => (a.date || "") > (b.date || "") ? 1 : -1);
       renderChat(msgs, "student-chat-box");
-    }, error => {
-      document.getElementById("student-chat-box").innerHTML = `<div class="error-msg">Erreur: ${error.message}</div>`;
+      markChatAsRead(currentUser, false); // On remarque en lu si nouveau message pdt qu'on est là
     });
 }
 
@@ -903,6 +961,7 @@ function sendChatMessage() {
     sender: currentUser,
     text: text,
     date: new Date().toISOString(),
+    read: false,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
   
@@ -919,13 +978,16 @@ function openSamiaChat(eleveName) {
   
   if (chatUnsubscribe) chatUnsubscribe();
   
-  // Listen to messages for this specific student
+  // Marquer lu
+  markChatAsRead(eleveName, true);
+  
   chatUnsubscribe = db.collection("messages")
     .where("eleve", "==", eleveName)
     .onSnapshot(snap => {
       let msgs = snap.docs.map(d => d.data());
       msgs.sort((a,b) => (a.date || "") > (b.date || "") ? 1 : -1);
       renderChat(msgs, "samia-chat-box");
+      markChatAsRead(eleveName, true); // On remarque en lu si on reçoit un msg live
     });
 }
 window.openSamiaChat = openSamiaChat;
@@ -947,6 +1009,7 @@ function sendSamiaChatMessage() {
     sender: "Samia",
     text: text,
     date: new Date().toISOString(),
+    read: false,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
   
@@ -1179,13 +1242,28 @@ async function loadOverview() {
   const c = document.getElementById("overview-list");
   c.innerHTML = `<div class="loading">Chargement des élèves...</div>`;
   try {
-    const exoSnap = await db.collection("exercices").where("partageProf","==",true).get();
+    const [exoSnap, msgSnap] = await Promise.all([
+      db.collection("exercices").where("partageProf","==",true).get(),
+      db.collection("messages").where("read", "==", false).get()
+    ]);
+    
     const exos = exoSnap.docs.map(d => ({id:d.id,...d.data()}));
+    
+    // Calcul des messages non lus par élève
+    const unreadMap = {};
+    msgSnap.docs.forEach(d => {
+      let m = d.data();
+      if (m.sender !== "Samia") {
+        unreadMap[m.eleve] = (unreadMap[m.eleve] || 0) + 1;
+      }
+    });
+
     const eleves = Object.keys(USERS).filter(u => !USERS[u].isTeacher);
 
     c.innerHTML = eleves.map(eleve => {
       const eExos = exos.filter(e => e.eleve === eleve);
       const color = USERS[eleve].color;
+      const unreadCount = unreadMap[eleve] || 0;
       const stats = {
         ok: eExos.filter(e=>e.statut==="bien_reussi").length,
         mid: eExos.filter(e=>e.statut==="compris_revoir").length,
@@ -1206,6 +1284,7 @@ async function loadOverview() {
               <span class="stat-chip s-bad">${stats.bad} ❌</span>
             </div>
           </div>
+          ${unreadCount > 0 ? `<span class="notif-pill">${unreadCount} message(s) non lu(s)</span>` : ""}
         </div>
         ${eExos.length === 0 ? `<div style="font-size:13px;color:var(--muted);padding:4px 0">Aucun exercice partagé</div>` : `
           ${eExos.slice(0,4).map(e => {
@@ -1234,7 +1313,6 @@ document.querySelectorAll(".modal-overlay").forEach(overlay => {
   overlay.addEventListener("click", e => {
     if (e.target === overlay) {
       overlay.classList.remove("open");
-      // If we close samia chat by clicking outside, we must detach listener
       if (overlay.id === "samia-chat-modal") closeSamiaChat();
     }
   });
