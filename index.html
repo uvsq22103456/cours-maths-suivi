@@ -206,11 +206,22 @@
   .exo-date { font-size: 11px; color: var(--muted); }
   .exo-actions { display: flex; gap: 6px; }
 
-  /* ===== QUESTIONS ===== */
-  .q-chapitre { font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-  .q-texte { font-size: 14px; font-weight: 500; }
-  .q-reponse { margin-top: 10px; padding: 10px 12px; background: var(--ok-bg); border-radius: 10px; border-left: 3px solid var(--ok); font-size: 13px; color: #1a5c35; }
-  .q-attente { margin-top: 8px; font-size: 12px; color: var(--muted); font-style: italic; }
+  /* ===== CHAT (MESSAGERIE) ===== */
+  .chat-container {
+    background: white; border-radius: var(--radius); border: 1px solid var(--border);
+    display: flex; flex-direction: column; height: 60vh;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05); overflow: hidden;
+  }
+  .chat-box { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .chat-msg { max-width: 80%; padding: 10px 14px; border-radius: 16px; font-size: 14px; line-height: 1.4; position: relative; }
+  .chat-msg.me { align-self: flex-end; background: var(--primary); color: white; border-bottom-right-radius: 4px; }
+  .chat-msg.other { align-self: flex-start; background: #f0f2f5; color: var(--text); border-bottom-left-radius: 4px; }
+  .chat-time { font-size: 10px; opacity: 0.7; margin-top: 4px; text-align: right; }
+  .chat-input-area { display: flex; gap: 8px; padding: 12px; background: white; border-top: 1px solid var(--border); }
+  .chat-input-area input { flex: 1; padding: 12px 16px; border-radius: 99px; border: 1px solid var(--border); font-family: inherit; font-size: 14px; background: var(--bg); outline: none; }
+  .chat-input-area input:focus { border-color: var(--primary); background: white; }
+  .chat-input-area button { background: var(--primary); color: white; border: none; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.2s; }
+  .chat-input-area button:active { transform: scale(0.9); }
 
   /* ===== FICHES ===== */
   .fiche-titre { font-size: 17px; font-weight: 800; margin-bottom: 8px; }
@@ -221,9 +232,7 @@
   .stats-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
   .stat-chip { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 99px; }
   .exo-compact { padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; }
-  .q-compact-row { padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; }
-  .notif-pill { background: var(--bad-bg); color: var(--bad); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 99px; }
-
+  
   /* ===== FILTERS ===== */
   .filters { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
   .filters::-webkit-scrollbar { display: none; }
@@ -253,7 +262,7 @@
   .btn-sm:active { transform: scale(0.95); }
   .btn-edit { background: var(--primary-light); color: var(--primary); }
   .btn-del { background: var(--bad-bg); color: var(--bad); }
-  .btn-reply { background: var(--ok-bg); color: var(--ok); }
+  .btn-reply { background: var(--ok-bg); color: var(--ok); width: 100%; text-align: center; padding: 10px; margin-top: 10px; display: flex; justify-content: center; gap: 8px; font-size: 14px;}
 
   /* ===== MODAL ===== */
   .modal-overlay {
@@ -303,16 +312,11 @@
   /* Photo preview */
   .photo-preview img { width: 100%; max-height: 150px; object-fit: contain; border-radius: 12px; margin-top: 8px; }
 
-  /* Reply modal */
-  .reply-eleve { font-weight: 700; margin-bottom: 6px; }
-  .reply-q { font-size: 13px; color: var(--muted); margin-bottom: 14px; padding: 10px; background: var(--bg); border-radius: 10px; }
-
   /* States */
   .empty-state { text-align: center; padding: 50px 20px; color: var(--muted); font-size: 15px; }
   .empty-state .emoji { font-size: 48px; display: block; margin-bottom: 12px; }
   .loading { text-align: center; padding: 40px; color: var(--muted); }
   .error-msg { text-align: center; padding: 20px; color: var(--bad); font-size: 14px; background: var(--bad-bg); border-radius: 12px; }
-
 
   /* ===== TODO ===== */
   .todo-columns {
@@ -382,19 +386,21 @@
 
   /* Teacher badge */
   .teacher-badge { background: #FFF8E1; color: #F57F17; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-left: 6px; }
+  
+  /* Modal Chat Full Height */
+  .modal-chat { height: 85vh; display: flex; flex-direction: column; padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
+  .modal-chat .chat-container { border: none; box-shadow: none; height: 100%; flex: 1; }
 </style>
 </head>
 <body>
 
-<!-- ===== LOGIN ===== -->
 <div id="login-screen">
   <div class="login-emoji">🎓</div>
   <div class="login-title">MathSpace</div>
   <div class="login-sub">Cours particuliers de maths</div>
 
   <div class="login-grid" id="user-grid">
-    <!-- filled by JS -->
-  </div>
+    </div>
 
   <div class="pin-container" id="pin-section" style="display:none">
     <div class="pin-label" id="pin-label">Entre ton code PIN</div>
@@ -422,7 +428,6 @@
   </div>
 </div>
 
-<!-- ===== APP ===== -->
 <div id="app" style="display:none">
 
   <div class="topbar">
@@ -437,7 +442,6 @@
     </div>
   </div>
 
-  <!-- EXERCICES -->
   <div class="page active" id="page-exos">
     <div class="section-header">
       <div class="section-title">📚 Exercices</div>
@@ -456,16 +460,20 @@
     <div id="exo-list"></div>
   </div>
 
-  <!-- QUESTIONS -->
-  <div class="page" id="page-questions">
+  <div class="page" id="page-chat">
     <div class="section-header">
-      <div class="section-title">💬 Questions</div>
-      <button class="btn-primary" onclick="openQModal()"><i class="fa fa-plus"></i> Question</button>
+      <div class="section-title">💬 Messagerie</div>
     </div>
-    <div id="q-list"></div>
+    <div class="chat-container">
+      <div class="chat-box" id="student-chat-box">
+        </div>
+      <div class="chat-input-area">
+        <input type="text" id="student-chat-input" placeholder="Écris un message à Samia..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+        <button onclick="sendChatMessage()"><i class="fa fa-paper-plane"></i></button>
+      </div>
+    </div>
   </div>
 
-  <!-- FICHES -->
   <div class="page" id="page-fiches">
     <div class="section-header">
       <div class="section-title">📄 Fiches de cours</div>
@@ -474,7 +482,6 @@
     <div id="fiche-list"></div>
   </div>
 
-  <!-- TODO -->
   <div class="page" id="page-todo">
     <div class="section-header">
       <div class="section-title">✅ À faire</div>
@@ -492,7 +499,6 @@
     </div>
   </div>
 
-  <!-- OVERVIEW (Samia) -->
   <div class="page" id="page-overview">
     <div class="section-header">
       <div class="section-title">👩‍🏫 Élèves</div>
@@ -500,13 +506,12 @@
     <div id="overview-list"></div>
   </div>
 
-  <!-- NAV -->
   <nav class="nav-bar">
     <button class="nav-btn active" id="nav-exos" onclick="showPage('exos')">
       <i class="fa fa-book-open"></i><span>Exercices</span>
     </button>
-    <button class="nav-btn" id="nav-questions" onclick="showPage('questions')">
-      <i class="fa fa-comment-dots"></i><span>Questions</span>
+    <button class="nav-btn" id="nav-chat" onclick="showPage('chat')">
+      <i class="fa fa-comments"></i><span>Messages</span>
     </button>
     <button class="nav-btn" id="nav-todo" onclick="showPage('todo')">
       <i class="fa fa-circle-check"></i><span>À faire</span>
@@ -520,7 +525,21 @@
   </nav>
 </div>
 
-<!-- MODAL TODO -->
+<div class="modal-overlay" id="samia-chat-modal">
+  <div class="modal modal-chat">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="samia-chat-title">Chat avec ...</div>
+    <div class="chat-container">
+      <div class="chat-box" id="samia-chat-box">
+        </div>
+      <div class="chat-input-area">
+        <input type="text" id="samia-chat-input" placeholder="Répondre..." onkeypress="if(event.key==='Enter') sendSamiaChatMessage()">
+        <button onclick="sendSamiaChatMessage()"><i class="fa fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="todo-modal">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -547,7 +566,6 @@
   </div>
 </div>
 
-<!-- MODAL EXERCICE -->
 <div class="modal-overlay" id="exo-modal">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -607,32 +625,6 @@
   </div>
 </div>
 
-<!-- MODAL QUESTION -->
-<div class="modal-overlay" id="q-modal">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Poser une question</div>
-    <div class="form-group">
-      <label class="form-label">Chapitre concerné</label>
-      <input class="form-input" id="q-chapitre" placeholder="Ex: Probabilités, Suites…">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Ta question *</label>
-      <textarea class="form-textarea" id="q-texte" placeholder="Décris ta question…" style="min-height:120px"></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Photo</label>
-      <input type="file" class="form-input" id="q-photo" accept="image/*" onchange="previewPhoto('q-photo','q-photo-preview')">
-      <div class="photo-preview" id="q-photo-preview"></div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeQModal()">Annuler</button>
-      <button class="btn-primary btn-confirm" id="q-save-btn" onclick="saveQuestion()">Envoyer 📨</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL FICHE -->
 <div class="modal-overlay" id="fiche-modal">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -670,24 +662,6 @@
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeFicheModal()">Annuler</button>
       <button class="btn-primary btn-confirm" id="fiche-save-btn" onclick="saveFiche()">Publier 📤</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL RÉPONSE -->
-<div class="modal-overlay" id="reply-modal">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Répondre</div>
-    <div class="reply-eleve" id="reply-eleve-name"></div>
-    <div class="reply-q" id="reply-q-text"></div>
-    <div class="form-group">
-      <label class="form-label">Ta réponse</label>
-      <textarea class="form-textarea" id="reply-text" style="min-height:120px" placeholder="Écris ta réponse…"></textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeReplyModal()">Annuler</button>
-      <button class="btn-primary btn-confirm" onclick="sendReply()">Envoyer ✉️</button>
     </div>
   </div>
 </div>
@@ -733,7 +707,10 @@ var currentUser = null;
 var selectedUser = null;
 var pinInput = "";
 var editExoId = null;
-var replyQId = null;
+
+// Chat variables
+var chatUnsubscribe = null;
+var currentChatStudent = null; // Used by Samia to know who she is chatting with
 
 // ===== LOGIN =====
 function buildUserGrid() {
@@ -756,6 +733,7 @@ function selectUser(name) {
   updateDots();
   document.getElementById("login-error").style.display = "none";
 }
+window.selectUser = selectUser;
 
 function pinPress(d) {
   if (pinInput.length >= 4) return;
@@ -763,11 +741,13 @@ function pinPress(d) {
   updateDots();
   if (pinInput.length === 4) setTimeout(checkPin, 200);
 }
+window.pinPress = pinPress;
 
 function pinDel() {
   pinInput = pinInput.slice(0, -1);
   updateDots();
 }
+window.pinDel = pinDel;
 
 function updateDots() {
   for (let i = 0; i < 4; i++) {
@@ -791,18 +771,24 @@ function doLogin(name) {
   const u = USERS[name];
   document.getElementById("login-screen").style.display = "none";
   document.getElementById("app").style.display = "block";
-  document.getElementById("topbar-name").textContent = name + (u.isTeacher ? "" : "");
+  document.getElementById("topbar-name").textContent = name;
   const av = document.getElementById("topbar-avatar");
   av.textContent = name[0];
   av.style.background = u.color;
+  
   if (u.isTeacher) {
     document.getElementById("nav-overview").style.display = "flex";
+    document.getElementById("nav-chat").style.display = "none"; // Samia accesses chat via Overview
     document.getElementById("btn-add-fiche").style.display = "flex";
+  } else {
+    document.getElementById("nav-overview").style.display = "none";
+    document.getElementById("nav-chat").style.display = "flex";
   }
   showPage("exos");
 }
 
 function logout() {
+  if (chatUnsubscribe) chatUnsubscribe();
   currentUser = null; selectedUser = null; pinInput = "";
   document.getElementById("login-screen").style.display = "flex";
   document.getElementById("app").style.display = "none";
@@ -813,26 +799,33 @@ function logout() {
   updateDots();
   document.querySelectorAll(".user-btn").forEach(b => b.classList.remove("selected"));
 }
+window.logout = logout;
 
 // ===== PAGES =====
 function showPage(p) {
+  if (chatUnsubscribe && p !== 'chat') { chatUnsubscribe(); } // Stop listening to chat if leaving page
+  
   document.querySelectorAll(".page").forEach(x => x.classList.remove("active"));
   document.querySelectorAll(".nav-btn").forEach(x => x.classList.remove("active"));
-  var pageMap = {exos:'exos', questions:'questions', fiches:'fiches', todo:'todo', overview:'overview'};
+  var pageMap = {exos:'exos', chat:'chat', fiches:'fiches', todo:'todo', overview:'overview'};
   document.getElementById("page-" + (pageMap[p] || p)).classList.add("active");
-  document.getElementById("nav-" + p).classList.add("active");
+  
+  // Highlight the correct nav button (if it exists)
+  var navBtn = document.getElementById("nav-" + p);
+  if (navBtn) navBtn.classList.add("active");
+  
   if (p === "exos") loadExos();
-  if (p === "questions") loadQuestions();
+  if (p === "chat") initStudentChat();
   if (p === "fiches") loadFiches();
   if (p === "todo") loadTodo();
   if (p === "overview") loadOverview();
 }
+window.showPage = showPage;
 
 // ===== PHOTO =====
 function previewPhoto(inputId, previewId) {
   const file = document.getElementById(inputId).files[0];
   if (!file) return;
-  // Compress before storing
   const reader = new FileReader();
   reader.onload = e => {
     const img = new Image();
@@ -852,10 +845,115 @@ function previewPhoto(inputId, previewId) {
   };
   reader.readAsDataURL(file);
 }
+window.previewPhoto = previewPhoto;
 
 function getPhotoBase64(inputId) {
   return document.getElementById(inputId).dataset.base64 || null;
 }
+
+// ===== MESSAGERIE (CHAT) =====
+
+function renderChat(msgs, containerId) {
+  const box = document.getElementById(containerId);
+  if (msgs.length === 0) {
+    box.innerHTML = `<div class="empty-state"><span class="emoji">💬</span>Aucun message.<br>Envoie un message pour commencer !</div>`;
+    return;
+  }
+  
+  box.innerHTML = msgs.map(m => {
+    const isMe = m.sender === currentUser;
+    const timeStr = m.date ? new Date(m.date).toLocaleTimeString("fr-FR", {hour: '2-digit', minute:'2-digit'}) : "";
+    return `
+      <div class="chat-msg ${isMe ? 'me' : 'other'}">
+        <div>${m.text}</div>
+        <div class="chat-time">${timeStr}</div>
+      </div>
+    `;
+  }).join("");
+  
+  // Scroll to bottom
+  setTimeout(() => { box.scrollTop = box.scrollHeight; }, 100);
+}
+
+// Pour l'élève
+function initStudentChat() {
+  if (chatUnsubscribe) chatUnsubscribe(); // Clean up previous listener
+  document.getElementById("student-chat-box").innerHTML = `<div class="loading">Chargement...</div>`;
+  
+  // Listen to messages where the student is involved
+  chatUnsubscribe = db.collection("messages")
+    .where("eleve", "==", currentUser)
+    .onSnapshot(snap => {
+      let msgs = snap.docs.map(d => d.data());
+      // Sort chronologically in JS
+      msgs.sort((a,b) => (a.date || "") > (b.date || "") ? 1 : -1);
+      renderChat(msgs, "student-chat-box");
+    }, error => {
+      document.getElementById("student-chat-box").innerHTML = `<div class="error-msg">Erreur: ${error.message}</div>`;
+    });
+}
+
+function sendChatMessage() {
+  const input = document.getElementById("student-chat-input");
+  const text = input.value.trim();
+  if (!text) return;
+  
+  db.collection("messages").add({
+    eleve: currentUser,
+    sender: currentUser,
+    text: text,
+    date: new Date().toISOString(),
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+  
+  input.value = "";
+}
+window.sendChatMessage = sendChatMessage;
+
+// Pour Samia
+function openSamiaChat(eleveName) {
+  currentChatStudent = eleveName;
+  document.getElementById("samia-chat-title").textContent = `Chat avec ${eleveName}`;
+  document.getElementById("samia-chat-modal").classList.add("open");
+  document.getElementById("samia-chat-box").innerHTML = `<div class="loading">Chargement...</div>`;
+  
+  if (chatUnsubscribe) chatUnsubscribe();
+  
+  // Listen to messages for this specific student
+  chatUnsubscribe = db.collection("messages")
+    .where("eleve", "==", eleveName)
+    .onSnapshot(snap => {
+      let msgs = snap.docs.map(d => d.data());
+      msgs.sort((a,b) => (a.date || "") > (b.date || "") ? 1 : -1);
+      renderChat(msgs, "samia-chat-box");
+    });
+}
+window.openSamiaChat = openSamiaChat;
+
+function closeSamiaChat() {
+  document.getElementById("samia-chat-modal").classList.remove("open");
+  if (chatUnsubscribe) { chatUnsubscribe(); chatUnsubscribe = null; }
+  currentChatStudent = null;
+}
+window.closeSamiaChat = closeSamiaChat;
+
+function sendSamiaChatMessage() {
+  const input = document.getElementById("samia-chat-input");
+  const text = input.value.trim();
+  if (!text || !currentChatStudent) return;
+  
+  db.collection("messages").add({
+    eleve: currentChatStudent,
+    sender: "Samia",
+    text: text,
+    date: new Date().toISOString(),
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+  
+  input.value = "";
+}
+window.sendSamiaChatMessage = sendSamiaChatMessage;
+
 
 // ===== EXERCICES =====
 function openExoModal(id = null) {
@@ -875,11 +973,13 @@ function openExoModal(id = null) {
   }
   document.getElementById("exo-modal").classList.add("open");
 }
+window.openExoModal = openExoModal;
 
 function closeExoModal() {
   document.getElementById("exo-modal").classList.remove("open");
   editExoId = null;
 }
+window.closeExoModal = closeExoModal;
 
 async function saveExo() {
   const titre = document.getElementById("exo-titre").value.trim();
@@ -914,12 +1014,14 @@ async function saveExo() {
   } catch(e) { alert("Erreur : " + e.message); }
   btn.textContent = "Enregistrer"; btn.disabled = false;
 }
+window.saveExo = saveExo;
 
 async function deleteExo(id) {
   if (!confirm("Supprimer ?")) return;
   await db.collection("exercices").doc(id).delete();
   loadExos();
 }
+window.deleteExo = deleteExo;
 
 function openEditExo(id, data) {
   openExoModal(id);
@@ -937,6 +1039,7 @@ function openEditExo(id, data) {
     }
   }, 50);
 }
+window.openEditExo = openEditExo;
 
 async function loadExos() {
   const container = document.getElementById("exo-list");
@@ -959,6 +1062,7 @@ async function loadExos() {
       const s = STATUTS[d.statut] || {label: d.statut, cls: ""};
       const date = d.date ? new Date(d.date).toLocaleDateString("fr-FR") : "";
       const dataStr = JSON.stringify(d).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/`/g,"\\`");
+      
       return `
       <div class="card">
         <div class="exo-titulo">${d.titre ? `<div class="exo-titre">${d.titre}</div>` : ""}</div>
@@ -974,72 +1078,18 @@ async function loadExos() {
         <div class="exo-footer">
           <span class="exo-date">${date}</span>
           <div class="exo-actions">
-            <button class="btn-sm btn-edit" onclick='openEditExo("${d.id}", ${JSON.stringify(d)})'>✏️</button>
+            <button class="btn-sm btn-edit" onclick='openEditExo("${d.id}", ${dataStr})'>✏️</button>
             <button class="btn-sm btn-del" onclick="deleteExo('${d.id}')">🗑️</button>
           </div>
         </div>
       </div>`;
     }).join("");
   } catch(e) {
-    container.innerHTML = `<div class="error-msg">⚠️ Erreur : ${e.message}<br><small>Vérifiez les règles Firestore</small></div>`;
+    container.innerHTML = `<div class="error-msg">⚠️ Erreur : ${e.message}</div>`;
   }
 }
+window.loadExos = loadExos;
 
-// ===== QUESTIONS =====
-function openQModal() {
-  document.getElementById("q-texte").value = "";
-  document.getElementById("q-chapitre").value = "";
-  document.getElementById("q-photo").value = "";
-  document.getElementById("q-photo").dataset.base64 = "";
-  document.getElementById("q-photo-preview").innerHTML = "";
-  document.getElementById("q-modal").classList.add("open");
-}
-function closeQModal() { document.getElementById("q-modal").classList.remove("open"); }
-
-async function saveQuestion() {
-  const texte = document.getElementById("q-texte").value.trim();
-  if (!texte) { alert("Écris ta question !"); return; }
-  const btn = document.getElementById("q-save-btn");
-  btn.textContent = "⏳ Envoi..."; btn.disabled = true;
-  const data = {
-    eleve: currentUser,
-    texte,
-    chapitre: document.getElementById("q-chapitre").value.trim(),
-    date: new Date().toISOString(),
-    reponse: null,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  };
-  const photo = getPhotoBase64("q-photo");
-  if (photo) data.photoBase64 = photo;
-  try {
-    await db.collection("questions").add(data);
-    closeQModal();
-    loadQuestions();
-  } catch(e) { alert("Erreur : " + e.message); }
-  btn.textContent = "Envoyer 📨"; btn.disabled = false;
-}
-
-async function loadQuestions() {
-  const c = document.getElementById("q-list");
-  c.innerHTML = `<div class="loading">Chargement...</div>`;
-  try {
-    const snap = await db.collection("questions").where("eleve","==",currentUser).get();
-    var qsorted = snap.docs.map(d=>({id:d.id,...d.data()})).sort(function(a,b){return (b.date||"")>(a.date||"")?1:-1;});
-    if (qsorted.length === 0) { c.innerHTML = `<div class="empty-state"><span class="emoji">💬</span>Aucune question.<br>N'hésite pas à poser !</div>`; return; }
-    c.innerHTML = qsorted.map(d => {
-      const dat = d;
-      const date = dat.date ? new Date(dat.date).toLocaleDateString("fr-FR") : "";
-      return `
-      <div class="card">
-        ${dat.chapitre ? `<div class="q-chapitre">${dat.chapitre}</div>` : ""}
-        <div class="q-texte">${dat.texte}</div>
-        ${dat.photoBase64 ? `<img class="exo-photo" src="${dat.photoBase64}">` : ""}
-        <div class="exo-date" style="margin-top:6px">${date}</div>
-        ${dat.reponse ? `<div class="q-reponse">💬 Samia : ${dat.reponse}</div>` : `<div class="q-attente">⏳ En attente de réponse…</div>`}
-      </div>`;
-    }).join("");
-  } catch(e) { c.innerHTML = `<div class="error-msg">Erreur : ${e.message}</div>`; }
-}
 
 // ===== FICHES =====
 function openFicheModal() {
@@ -1052,7 +1102,10 @@ function openFicheModal() {
   document.querySelectorAll(".fiche-dest").forEach(c => c.checked = false);
   document.getElementById("fiche-modal").classList.add("open");
 }
+window.openFicheModal = openFicheModal;
+
 function closeFicheModal() { document.getElementById("fiche-modal").classList.remove("open"); }
+window.closeFicheModal = closeFicheModal;
 
 async function saveFiche() {
   const titre = document.getElementById("fiche-titre").value.trim();
@@ -1079,12 +1132,14 @@ async function saveFiche() {
   } catch(e) { alert("Erreur : " + e.message); }
   btn.textContent = "Publier 📤"; btn.disabled = false;
 }
+window.saveFiche = saveFiche;
 
 async function deleteFiche(id) {
   if (!confirm("Supprimer cette fiche ?")) return;
   await db.collection("fiches").doc(id).delete();
   loadFiches();
 }
+window.deleteFiche = deleteFiche;
 
 async function loadFiches() {
   const c = document.getElementById("fiche-list");
@@ -1124,18 +1179,12 @@ async function loadOverview() {
   const c = document.getElementById("overview-list");
   c.innerHTML = `<div class="loading">Chargement des élèves...</div>`;
   try {
-    const [exoSnap, qSnap] = await Promise.all([
-      db.collection("exercices").where("partageProf","==",true).get(),
-      db.collection("questions").get()
-    ]);
+    const exoSnap = await db.collection("exercices").where("partageProf","==",true).get();
     const exos = exoSnap.docs.map(d => ({id:d.id,...d.data()}));
-    const questions = qSnap.docs.map(d => ({id:d.id,...d.data()}));
     const eleves = Object.keys(USERS).filter(u => !USERS[u].isTeacher);
 
     c.innerHTML = eleves.map(eleve => {
       const eExos = exos.filter(e => e.eleve === eleve);
-      const eQs = questions.filter(q => q.eleve === eleve);
-      const unanswered = eQs.filter(q => !q.reponse);
       const color = USERS[eleve].color;
       const stats = {
         ok: eExos.filter(e=>e.statut==="bien_reussi").length,
@@ -1143,6 +1192,7 @@ async function loadOverview() {
         warn: eExos.filter(e=>e.statut==="a_revoir").length,
         bad: eExos.filter(e=>e.statut==="rien_compris").length
       };
+      
       return `
       <div class="card" style="border-left: 4px solid ${color}">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
@@ -1156,7 +1206,6 @@ async function loadOverview() {
               <span class="stat-chip s-bad">${stats.bad} ❌</span>
             </div>
           </div>
-          ${unanswered.length > 0 ? `<span class="notif-pill">${unanswered.length} ❓</span>` : ""}
         </div>
         ${eExos.length === 0 ? `<div style="font-size:13px;color:var(--muted);padding:4px 0">Aucun exercice partagé</div>` : `
           ${eExos.slice(0,4).map(e => {
@@ -1171,46 +1220,25 @@ async function loadOverview() {
             </div>`;
           }).join("")}
         `}
-        ${eQs.length > 0 ? `
-          <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px">
-            <div style="font-weight:700;font-size:13px;margin-bottom:8px">💬 Questions</div>
-            ${eQs.slice(0,3).map(q => `
-              <div class="q-compact-row">
-                <div style="flex:1">${q.texte}</div>
-                ${!q.reponse
-                  ? `<button class="btn-sm btn-reply" onclick="openReplyModal('${q.id}','${eleve}',\`${q.texte.replace(/`/g,"'")}\`)">Répondre</button>`
-                  : `<span style="font-size:12px;color:var(--ok)">✓ Répondu</span>`}
-              </div>`).join("")}
-          </div>` : ""}
+        <button class="btn-reply" onclick="openSamiaChat('${eleve}')">
+          <i class="fa fa-comment-dots"></i> Ouvrir le Chat
+        </button>
       </div>`;
     }).join("");
   } catch(e) { c.innerHTML = `<div class="error-msg">Erreur : ${e.message}</div>`; }
 }
 
-function openReplyModal(qId, eleve, texte) {
-  replyQId = qId;
-  document.getElementById("reply-eleve-name").textContent = eleve;
-  document.getElementById("reply-q-text").textContent = texte;
-  document.getElementById("reply-text").value = "";
-  document.getElementById("reply-modal").classList.add("open");
-}
-function closeReplyModal() { document.getElementById("reply-modal").classList.remove("open"); replyQId = null; }
-
-async function sendReply() {
-  const rep = document.getElementById("reply-text").value.trim();
-  if (!rep || !replyQId) return;
-  await db.collection("questions").doc(replyQId).update({ reponse: rep });
-  closeReplyModal();
-  loadOverview();
-}
 
 // Close modals on overlay click
 document.querySelectorAll(".modal-overlay").forEach(overlay => {
   overlay.addEventListener("click", e => {
-    if (e.target === overlay) overlay.classList.remove("open");
+    if (e.target === overlay) {
+      overlay.classList.remove("open");
+      // If we close samia chat by clicking outside, we must detach listener
+      if (overlay.id === "samia-chat-modal") closeSamiaChat();
+    }
   });
 });
-
 
 // ===== TODO =====
 function openTodoModal() {
@@ -1219,7 +1247,10 @@ function openTodoModal() {
   document.getElementById("todo-type").value = "seule";
   document.getElementById("todo-modal").classList.add("open");
 }
+window.openTodoModal = openTodoModal;
+
 function closeTodoModal() { document.getElementById("todo-modal").classList.remove("open"); }
+window.closeTodoModal = closeTodoModal;
 
 async function saveTodo() {
   var texte = document.getElementById("todo-texte").value.trim();
@@ -1240,56 +1271,67 @@ async function saveTodo() {
   } catch(e) { alert("Erreur : " + e.message); }
   btn.textContent = "Ajouter ✅"; btn.disabled = false;
 }
+window.saveTodo = saveTodo;
 
 async function toggleTodo(id, done) {
   await db.collection("todos").doc(id).update({ done: !done });
   loadTodo();
 }
+window.toggleTodo = toggleTodo;
 
 async function deleteTodo(id) {
   await db.collection("todos").doc(id).delete();
   loadTodo();
 }
+window.deleteTodo = deleteTodo;
 
 async function loadTodo() {
   var cSeule = document.getElementById("todo-seule");
   var cSamia = document.getElementById("todo-samia");
-  cSeule.innerHTML = '<div class="loading" style="padding:16px;font-size:13px">Chargement...</div>';
-  cSamia.innerHTML = '<div class="loading" style="padding:16px;font-size:13px">Chargement...</div>';
+  cSeule.innerHTML = `<div class="loading" style="padding:16px;font-size:13px">Chargement...</div>`;
+  cSamia.innerHTML = `<div class="loading" style="padding:16px;font-size:13px">Chargement...</div>`;
+  
   try {
     var snap = await db.collection("todos")
       .where("eleve", "==", currentUser).get();
+      
     var todos = snap.docs.map(function(d) { return Object.assign({id: d.id}, d.data()); });
     todos.sort(function(a,b){ return (a.date||'') > (b.date||'') ? 1 : -1; });
+    
     var seule = todos.filter(function(t) { return t.type === "seule"; });
     var avecSamia = todos.filter(function(t) { return t.type === "samia"; });
 
     function renderTodos(list, container, isSamia) {
       if (list.length === 0) {
-        container.innerHTML = '<div class="todo-empty">Rien pour l'instant 🙂</div>';
+        container.innerHTML = `<div class="todo-empty">Rien pour l'instant 🙂</div>`;
         return;
       }
+      
       var checkClass = isSamia ? "todo-checkbox todo-checkbox-samia" : "todo-checkbox";
+      
       container.innerHTML = list.map(function(t) {
-        return '<div class="todo-item">' +
-          '<div class="' + checkClass + (t.done ? " checked" : "") + '" onclick="toggleTodo('' + t.id + '',' + t.done + ')">' +
-          (t.done ? "✓" : "") + '</div>' +
-          '<div class="todo-text' + (t.done ? " done" : "") + '">' +
-          (t.theme ? '<div class="todo-theme">' + t.theme + '</div>' : '') +
-          t.texte +
-          '</div>' +
-          '<button class="todo-del" onclick="deleteTodo('' + t.id + '')" title="Supprimer">✕</button>' +
-          '</div>';
+        return `
+          <div class="todo-item">
+            <div class="${checkClass} ${t.done ? "checked" : ""}" onclick="toggleTodo('${t.id}', ${t.done})">
+              ${t.done ? "✓" : ""}
+            </div>
+            <div class="todo-text ${t.done ? "done" : ""}">
+              ${t.theme ? `<div class="todo-theme">${t.theme}</div>` : ""}
+              ${t.texte}
+            </div>
+            <button class="todo-del" onclick="deleteTodo('${t.id}')" title="Supprimer">✕</button>
+          </div>`;
       }).join("");
     }
 
     renderTodos(seule, cSeule, false);
     renderTodos(avecSamia, cSamia, true);
   } catch(e) {
-    cSeule.innerHTML = '<div style="font-size:12px;color:var(--bad);padding:8px">Erreur</div>';
-    cSamia.innerHTML = '<div style="font-size:12px;color:var(--bad);padding:8px">Erreur</div>';
+    cSeule.innerHTML = `<div style="font-size:12px;color:var(--bad);padding:8px">Erreur : ${e.message}</div>`;
+    cSamia.innerHTML = `<div style="font-size:12px;color:var(--bad);padding:8px">Erreur : ${e.message}</div>`;
   }
 }
+window.loadTodo = loadTodo;
 
 // Init
 buildUserGrid();
